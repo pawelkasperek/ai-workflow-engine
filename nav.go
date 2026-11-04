@@ -120,6 +120,11 @@ func (s *Server) sidebarNav(prefix, active string) Nav {
 		return Nav{Prefix: prefix}
 	}
 	issues, _ := tracker.LoadIssues(proj.IssueDir)
+	return s.sidebarNavForIssues(proj, prefix, active, issues)
+}
+
+func (s *Server) sidebarNavForIssues(proj *tracker.Project, prefix, active string, issues []*tracker.Issue) Nav {
+	wf := proj.LoadWorkflow()
 	_, activeBots := sessionsByIssueSlug(proj, issues)
 
 	open := 0
@@ -138,7 +143,7 @@ func (s *Server) sidebarNav(prefix, active string) Nav {
 		openIssues = append(openIssues, issue)
 	}
 
-	for name := range proj.LoadWorkflow().Workbench.Systems {
+	for name := range wf.Workbench.Systems {
 		systemNames[strings.ToLower(name)] = true
 	}
 
@@ -149,9 +154,9 @@ func (s *Server) sidebarNav(prefix, active string) Nav {
 		Open:           open,
 		ActiveBots:     activeBots,
 		CreateInPage:   active == "list" || active == "board",
-		ProjectActions: proj.LoadWorkflow().ProjectActions,
+		ProjectActions: wf.ProjectActions,
 	}
-	for i, p := range proj.LoadWorkflow().Workbench.Pages {
+	for i, p := range wf.Workbench.Pages {
 		key := fmt.Sprintf("page/%d", i)
 		nav.Pages = append(nav.Pages, NavItem{Key: fmt.Sprint(i), Label: p.Title, Href: fmt.Sprintf("%s/pages/%d", prefix, i), Active: active == key})
 	}
@@ -217,7 +222,7 @@ func (s *Server) sidebarNav(prefix, active string) Nav {
 		nav.Systems = systemCounts(bySystem, func(name string) string { return prefix + "/workboard?system=" + name })
 		nav.Legend = true
 	case active == "systems" || strings.HasPrefix(active, "systems/"):
-		nav.Systems = systemsPanel(prefix, active, issues, proj.LoadWorkflow())
+		nav.Systems = systemsPanel(prefix, active, issues, wf)
 	}
 	return nav
 }

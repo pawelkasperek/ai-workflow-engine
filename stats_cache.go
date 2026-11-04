@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"log"
+	"os"
 	"sync"
 	"time"
 
@@ -40,6 +41,48 @@ type statsAggregate struct {
 	ms      int64
 	running bool
 }
+type recordedStatsEntry struct {
+	fp     string
+	rows   []RecordedTransitionRow
+	totals []IssueTotalRow
+}
+
+// Unlike the timeline cache, token totals include unfinished issues too.
+// Stat every sidecar so new transitions invalidate immediately, independently
+// of the issue markdown's mtime. Do not retain a result on filesystem errors.
+func (c *statsCache) recordedStats(slug string, issues []*tracker.Issue) ([]RecordedTransitionRow, []IssueTotalRow) {
+	h := sha256.New()
+	valid := true
+	for _, issue := range issues {
+		if issue == nil {
+			continue
+		}
+		fmt.Fprintf(h, "%s:%s:%s:%s\n", issue.FilePath, issue.Slug, issue.Title, issue.Status)
+		info, err := os.Stat(tracker.StatsSidecarPath(issue.FilePath))
+		if err == nil {
+			fmt.Fprintf(h, "%d:%d\n", info.ModTime().UnixNano(), info.Size())
+		} else if !os.IsNotExist(err) {
+			valid = false
+		}
+	}
+	fp := fmt.Sprintf("%x", h.Sum(nil))
+	c.mu.Lock()
+	entry, ok := c.recorded[slug]
+	c.mu.Unlock()
+	if valid && ok && entry.fp == fp {
+		return entry.rows, entry.totals
+	}
+	rows, totals := aggregateRecordedStats(issues)
+	c.mu.Lock()
+	if c.recorded == nil {
+		c.recorded = make(map[string]recordedStatsEntry)
+	}
+	if valid {
+		c.recorded[slug] = recordedStatsEntry{fp, rows, totals}
+	}
+	c.mu.Unlock()
+	return rows, totals
+}
 
 type statsUsage struct {
 	at      time.Time
@@ -54,7 +97,8 @@ type statsCache struct {
 	usage map[string]*statsUsage
 	// buildMu serializes aggregate builds per project, so two requests on
 	// a cold cache build it once.
-	buildMu map[string]*sync.Mutex
+	buildMu  map[string]*sync.Mutex
+	recorded map[string]recordedStatsEntry
 }
 
 func newStatsCache() *statsCache {

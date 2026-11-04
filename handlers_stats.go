@@ -45,6 +45,7 @@ type IssueTotalRow struct {
 }
 
 type StatsData struct {
+	Sidebar             Nav
 	Prefix              string
 	ProjectName         string
 	DispatchPromptCost  int
@@ -177,11 +178,12 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request, proj *track
 	})
 	timeRep := wide.Filter(dash.From, dash.To)
 
-	recorded, totals := aggregateRecordedStats(issues)
+	recorded, totals := s.stats.recordedStats(proj.Slug, issues)
 	usage, usageNotice, usageLoading := s.stats.cliUsage(proj, now, s.statsBG("stats cli usage "+proj.Slug))
 
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := s.tmpl.ExecuteTemplate(w, "stats.html", StatsData{
+	var page bytes.Buffer
+	if err := s.tmpl.ExecuteTemplate(&page, "stats.html", StatsData{
+		Sidebar:             s.sidebarNavForIssues(proj, prefix, "stats", issues),
 		Prefix:              prefix,
 		ProjectName:         proj.Name,
 		DispatchPromptCost:  tracker.AgentDispatchPromptStaticCost(),
@@ -197,7 +199,10 @@ func (s *Server) handleStats(w http.ResponseWriter, r *http.Request, proj *track
 		TablesOpen:          opts.Days > 0,
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_, _ = w.Write(page.Bytes())
 }
 
 // buildStaticReferenceRows enumerates every (from→to) pair declared in the

@@ -20,7 +20,7 @@ func TestPortedScriptsUseTheLibrary(t *testing.T) {
 	if len(files) != 3 {
 		t.Fatalf("want the three ported scripts, got %v", files)
 	}
-	_, shellcheck := exec.LookPath("shellcheck")
+	_, shellcheck := exec.Command("shellcheck", "--version").CombinedOutput()
 	for _, f := range files {
 		data, err := os.ReadFile(f)
 		if err != nil {

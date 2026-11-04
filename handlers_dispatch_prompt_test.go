@@ -295,6 +295,7 @@ func TestStartAgentSession_LogsInProjectAndRecordsDispatch(t *testing.T) {
 	withPromptDeliveryTimeout(t, 5*time.Second)
 	proj, tmpDir := setupWorktreeProject(t)
 	worktree := filepath.Join(tmpDir, ".worktrees", "bug-in-login")
+	proj.Terminal = "none"
 	if err := os.MkdirAll(worktree, 0o755); err != nil {
 		t.Fatal(err)
 	}

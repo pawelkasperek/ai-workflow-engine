@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 
@@ -235,6 +236,46 @@ func writeFileAtomically(filePath string, data []byte, perm os.FileMode) error {
 	return nil
 }
 
+// Cache only parsing, not filesystem state: every load still reads the files,
+// so edits (even with preserved size/mtime), additions and deletions are visible.
+// Cached values never escape: callers freely mutate issues and their slices.
+var issueParseCache = struct {
+	sync.Mutex
+	entries map[[32]byte]*Issue
+}{entries: make(map[[32]byte]*Issue)}
+
+func cloneParsedIssue(src *Issue) *Issue {
+	dst := *src
+	dst.Labels = append([]string(nil), src.Labels...)
+	dst.ExtraFields = append([]ExtraField(nil), src.ExtraFields...)
+	for i := range dst.ExtraFields {
+		dst.ExtraFields[i].Values = append([]string(nil), src.ExtraFields[i].Values...)
+	}
+	return &dst
+}
+
+func cachedParseIssue(filename string, data []byte) (*Issue, error) {
+	key := sha256.Sum256(data)
+	issueParseCache.Lock()
+	cached := issueParseCache.entries[key]
+	issueParseCache.Unlock()
+	if cached != nil {
+		return cloneParsedIssue(cached), nil
+	}
+	issue, err := ParseIssue(filename, data)
+	if err != nil {
+		return nil, err
+	}
+	issueParseCache.Lock()
+	// Bound retained memory in long-running viewers and CLI test processes.
+	if len(issueParseCache.entries) >= 4096 {
+		clear(issueParseCache.entries)
+	}
+	issueParseCache.entries[key] = issue
+	issueParseCache.Unlock()
+	return cloneParsedIssue(issue), nil
+}
+
 func LoadIssues(dir string) ([]*Issue, error) {
 	var issues []*Issue
 
@@ -252,7 +293,7 @@ func LoadIssues(dir string) ([]*Issue, error) {
 			return nil
 		}
 
-		issue, err := ParseIssue(d.Name(), data)
+		issue, err := cachedParseIssue(d.Name(), data)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "warning: skipping %s: %v\n", path, err)
 			return nil

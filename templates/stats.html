@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="app">
-{{template "sidebar" (sidebar .Prefix "stats")}}
+{{template "sidebar" .Sidebar}}
 <div class="app-main">
     <div class="container stats-page" data-testid="stats.dashboard" data-project="{{.Dash.Project}}">
         {{with .Dash}}

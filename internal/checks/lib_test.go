@@ -19,6 +19,15 @@ type libRun struct {
 	root string
 }
 
+// A version-manager shim may exist without an installed/configured binary.
+// This optional lint check needs a working ShellCheck, not just a PATH entry.
+func requireShellcheck(t *testing.T) {
+	t.Helper()
+	if out, err := exec.Command("shellcheck", "--version").CombinedOutput(); err != nil {
+		t.Skipf("shellcheck unavailable: %v: %s", err, out)
+	}
+}
+
 func needBash(t *testing.T) {
 	t.Helper()
 	if _, err := exec.LookPath("bash"); err != nil {
@@ -426,9 +435,7 @@ func TestLibNeedsBash4(t *testing.T) {
 }
 
 func TestLibPassesShellcheck(t *testing.T) {
-	if _, err := exec.LookPath("shellcheck"); err != nil {
-		t.Skip("no shellcheck")
-	}
+	requireShellcheck(t)
 	path := filepath.Join(t.TempDir(), "lib.sh")
 	os.WriteFile(path, Lib, 0o644)
 	if out, err := exec.Command("shellcheck", "-s", "bash", "-S", "warning", path).CombinedOutput(); err != nil {
