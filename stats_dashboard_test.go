@@ -111,10 +111,10 @@ func TestDashboardMatchesTimelineTab(t *testing.T) {
 // out days without issues, and marks families that do not exist yet.
 func TestDashboardTrendsFromSnapshots(t *testing.T) {
 	proj := fixItProject(t)
-	// Noon today: day(3).Add(-time.Hour) must stay on day(3)'s date, which
-	// time.Now() breaks in the hour after midnight.
-	y, m, dd := time.Now().Date()
-	now := time.Date(y, m, dd, 12, 0, 0, 0, time.Local)
+	// Keep the two day(3) snapshots on the same local calendar day.
+	// With time.Now(), subtracting an hour just after midnight moved the
+	// earlier snapshot to the previous day and added an unexpected point.
+	now := time.Date(2026, time.November, 4, 12, 0, 0, 0, time.Local)
 	day := func(n int) time.Time { return now.AddDate(0, 0, -n) }
 	snap := func(at time.Time, issues, cycle, share float64) *health.Snapshot {
 		date := at.Local().Format("2006-01-02T15:04")
