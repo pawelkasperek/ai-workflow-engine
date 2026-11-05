@@ -330,7 +330,7 @@ issue-cli transition <slug> --to "waiting-for-team-input"
       Tick the ones that are done (ids, several at once):
       issue-cli check cli/sample D2
   - [approval] Must be human-approved for "backlog" in the issue viewer
-      → a human approves at http://localhost:8080/p/demo/issue/cli/sample#approve-backlog
+      → a human approves at http://localhost:10770/p/demo/issue/cli/sample#approve-backlog
       → tell the human what to approve, then stop and end your turn; the approval nudge resumes you
 Nothing was changed.
 ```
@@ -450,7 +450,7 @@ These two commands do what leads used to do with `curl` against the viewer. One 
 **The viewer's address** for `status` and every link issue-cli prints (approval hints, `show`'s Timeline, Balance, Decisions, Metrics) comes from `viewerBaseURL` → `viewerstate.BaseURL`, in this order:
 1. `viewer_url:` at the top of `projects.yaml`
 2. the URL in `viewer.json`, only when that viewer serves the same config file
-3. `http://localhost:8080`
+3. `http://localhost:10770`
 
 `ISSUE_VIEWER_URL` is gone: neither the viewer nor issue-cli reads or sets it. When `viewer_url` is unset, the approval hint ends with `(set viewer_url in projects.yaml if your viewer is on a different host/port)`.
 

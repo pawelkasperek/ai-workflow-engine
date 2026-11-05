@@ -33,7 +33,7 @@ func TestScenarioEnvIsolated(t *testing.T) {
 		"XDG_STATE_HOME=/home/someone/.local/state",
 		"ISSUE_VIEWER_CONFIG=/home/someone/Work/projects.yaml",
 		"ISSUE_VIEWER_ISSUE_SLUG=real/issue",
-		"ISSUE_VIEWER_URL=http://localhost:8080",
+		"ISSUE_VIEWER_URL=http://localhost:10770",
 		"CLAUDECODE=1",
 		"AGENT_NAME=agent-real",
 		"GIT_AUTHOR_NAME=Someone",

@@ -1,0 +1,81 @@
+---
+title: "13. Ściąga i codzienna rutyna"
+description: "Najważniejsze polecenia oraz plan jednej sesji pracy."
+---
+
+## Cel
+
+Mieć krótką listę działań po ukończeniu ćwiczeń. W tabeli `<slug>` zastąp
+pełnym identyfikatorem zadania; nie wklejaj nawiasów do powłoki.
+
+## Krok po kroku
+
+1. Otwórz **Status** i sprawdź rzeczy czekające na Ciebie oraz stan CI.
+2. Wybierz jedno zadanie, przeczytaj opis, aktualny etap i ostatnie komentarze.
+3. Doprecyzuj zakres, zanim zdecydujesz o dispatchu.
+4. Gdy agent prosi o zgodę, sprawdź dowody; zatwierdź konkretny kolejny etap.
+5. Po zakończeniu przejrzyj diff kodu, testy, dokumentację i Timeline.
+6. Sprawdź integrację i wydanie zgodnie z polityką własnego workflow.
+
+## Odczyt bez zmiany statusu
+
+| Potrzeba | Polecenie |
+| --- | --- |
+| Wybrana konfiguracja | `issue-cli projects` |
+| Wszystkie zadania | `issue-cli --project nauka list --all` |
+| Kontekst zadania | `issue-cli --project nauka show <slug>` |
+| Lista checkboxów | `issue-cli --project nauka checklist <slug>` |
+| Workflow projektu | `issue-cli --project nauka process workflow` |
+| Wymagania przejścia | `issue-cli --project nauka transition <slug> --to "in progress" --dry-run` |
+| Prompt bez startu | `issue-cli --project nauka dispatch-prompt <slug>` |
+| Dowody kryteriów | `issue-cli --project nauka prove <slug> --list` |
+| Stan CI | `issue-cli --project nauka ci status` |
+| Pomoc komendy | `issue-cli transition --help` |
+
+## Działania zapisujące lub uruchamiające pracę
+
+| Potrzeba | Polecenie |
+| --- | --- |
+| Nowe zadanie | `issue-cli --project nauka create --title "Tytul" --system UI` |
+| Podjęcie zadania | `issue-cli --project nauka start <slug>` |
+| Komentarz | `issue-cli --project nauka comment <slug> --text "progress: ..."` |
+| Przejście po spełnieniu wymagań | `issue-cli --project nauka transition <slug> --to testing` |
+| Zaznaczenie wykonanego punktu | `issue-cli --project nauka check <slug> D1` |
+| Dispatch na Twoje polecenie | `issue-cli --project nauka dispatch <slug> --agent claude --quote "Twoje polecenie"` |
+| Start leada | `issue-cli --project nauka lead spawn` |
+| Snapshot | `issue-cli --project nauka health snapshot` |
+
+`start` może automatycznie przekroczyć stan handoff po zgodzie. `check` nie zastępuje
+wykonania pracy, a `transition` nadal sprawdza workflow.
+`approve` jest narzędziem leada do zapisania decyzji człowieka, nie sposobem
+samozatwierdzania pracy przez pracownika.
+
+## Uruchamianie programów
+
+W katalogu konfiguracji projektu:
+
+```bash
+issue-viewer -config projects.yaml -port 10770
+```
+
+W katalogu repozytorium silnika:
+
+```bash
+just tutorial-dev
+just tutorial-ci
+make build build-cli
+```
+
+Pierwsza komenda uruchamia **poradnik**, nie tablicę Go.
+
+## Oczekiwany wynik
+
+Potrafisz prowadzić małe zadanie bez omijania wymagań i masz konkretne miejsca
+do sprawdzenia decyzji, dowodów oraz wyników. Wróć do
+[planu nauki](/docs), jeśli chcesz powtórzyć wybrany etap.
+
+## Źródła
+
+[Pełna dokumentacja CLI](/sources/docs/CLI/overview.md) ·
+[README](/sources/README.md) ·
+[Rejestr komend](/sources/cmd/issue-cli/commands.go)

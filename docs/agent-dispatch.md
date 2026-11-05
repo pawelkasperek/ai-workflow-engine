@@ -373,7 +373,7 @@ When a CLI command (`start`, `transition`) fails because a human approval is mis
 Error: cannot start <slug>: human approval for "in progress" is missing; no changes were made
 
 A human must approve this in the issue viewer:
-  http://localhost:8080/p/<project>/issue/<slug>#approve-in-progress
+  http://localhost:10770/p/<project>/issue/<slug>#approve-in-progress
 
 Tell the human what needs approving, then stop and end your turn.
 Do not wait or poll: re-run this command only after the human says it is approved.
@@ -385,7 +385,7 @@ The base URL comes from the same place for every link the CLI prints and every c
 
 1. `viewer_url:` at the top of `projects.yaml`, e.g. `viewer_url: "https://issues.example.com"` (http or https with a host; a trailing `/` is trimmed, a path prefix is kept; anything else fails the config load)
 2. The running viewer's own address, from `viewer.json`, when that viewer serves the same config
-3. Default `http://localhost:8080`
+3. Default `http://localhost:10770`
 
 The viewer doesn't rebuild URLs from the request's `Host` header, and `ISSUE_VIEWER_URL` is no longer read or set. `issue-cli projects --json` gives each project's `viewer_url`.
 

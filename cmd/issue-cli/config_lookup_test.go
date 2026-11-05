@@ -29,7 +29,7 @@ func writeViewerJSON(t *testing.T, stateHome, cfg string) string {
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		t.Fatal(err)
 	}
-	data, _ := json.Marshal(map[string]any{"config": cfg, "url": "http://127.0.0.1:8080", "pid": 4242, "started": "2026-10-22T10:00:00Z"})
+	data, _ := json.Marshal(map[string]any{"config": cfg, "url": "http://127.0.0.1:10770", "pid": 4242, "started": "2026-10-22T10:00:00Z"})
 	path := filepath.Join(dir, "viewer.json")
 	if err := os.WriteFile(path, data, 0644); err != nil {
 		t.Fatal(err)

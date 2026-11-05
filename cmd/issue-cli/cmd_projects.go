@@ -22,7 +22,7 @@ then ~/.config/ai-workflow-engine/projects.yaml.
 
 --json gives each project's viewer_url: the viewer address issue-cli links
 to and calls (viewer_url in projects.yaml, else the running viewer's, else
-http://localhost:8080).
+http://localhost:10770).
 
 Examples:
   issue-cli projects

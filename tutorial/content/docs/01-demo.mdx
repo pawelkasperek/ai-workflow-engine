@@ -1,0 +1,50 @@
+---
+title: "1. Obejrzyj działającą aplikację"
+description: "Poznaj tablicę na przykładowych danych, zanim skonfigurujesz własny projekt."
+---
+
+## Cel
+
+Zobaczyć zadania, statusy i dokumentację bez uruchamiania agenta.
+Potrzebujesz Go zgodnego z `go.mod` oraz narzędzia `make`.
+
+## Krok po kroku
+
+1. Otwórz terminal w głównym katalogu **tego repozytorium**.
+2. Zbuduj aplikację i uruchom zestaw demonstracyjny:
+
+```bash
+make demo
+```
+
+3. Wejdź na `http://localhost:10770`. Przy jednym projekcie aplikacja od razu
+   przekierowuje do jego listy zadań — brak ekranu wyboru nie jest błędem.
+4. Wybierz **Status**. Zobacz, co wymaga Twojej uwagi i co jest w toku.
+5. Wybierz **Board**, kliknij kartę i przeczytaj zadanie. Zwróć uwagę na
+   status, sekcje, pola zatwierdzeń oraz przyciski Claude/Codex.
+6. Otwórz **Docs**, a następnie **More → Stats**. Nie wszystkie wykresy muszą
+   mieć dane: historia powstaje dopiero podczas pracy.
+
+> Demo używa plików w `demo/`. Edycja opisu, komentarz lub zatwierdzenie naprawdę
+> zapisuje dane na dysku. Na tym etapie tylko przeglądaj. Nie klikaj przycisków agentów.
+
+## Gdy port 10770 jest zajęty
+
+Nie zatrzymuj cudzej instancji. Po `make build` wybierz wolny port:
+
+```bash
+./issue-viewer -config demo/projects.yaml -port 10771
+```
+
+Otwórz wtedy `http://localhost:10771`.
+
+## Oczekiwany wynik
+
+Potrafisz odnaleźć zadanie i wrócić do tablicy. Zatrzymaj **tę uruchomioną przez
+siebie instancję** przez Ctrl+C w jej terminalu. Przejdź do [instalacji](/docs/02-instalacja).
+
+## Źródła
+
+[README](/sources/README.md) · [Makefile](/sources/Makefile) ·
+[Konfiguracja demo](/sources/demo/projects.yaml) ·
+[Nawigacja UI](/sources/cmd/issue-viewer/nav.go)

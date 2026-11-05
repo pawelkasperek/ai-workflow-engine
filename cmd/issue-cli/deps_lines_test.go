@@ -95,7 +95,7 @@ func TestShowPrintsDependenciesAndGuardMetrics(t *testing.T) {
 	for _, want := range []string{
 		"Depends on: beta (in progress), nowhere (unknown issue)",
 		"Decided by: beta#D-1 (active)",
-		"Guard metrics for Sim: 1 off (stuck), 1 near. See http://localhost:8080/p/test/metrics?system=Sim",
+		"Guard metrics for Sim: 1 off (stuck), 1 near. See http://localhost:10770/p/test/metrics?system=Sim",
 	} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("show is missing %q:\n%s", want, out)

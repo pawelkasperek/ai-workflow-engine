@@ -40,7 +40,7 @@ async function refresh($: EngineInterface, base: string) {
   await update($, approvals, () => next)
 }
 
-const DEFAULT_URL = 'http://localhost:8080'
+const DEFAULT_URL = 'http://localhost:10770'
 
 // viewerURL asks issue-cli where the board is, so the mod and the CLI never
 // disagree: the project's viewer_url from `issue-cli projects --json` (the

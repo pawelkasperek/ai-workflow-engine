@@ -1,0 +1,78 @@
+---
+title: "11. Lokalne CI i świadome wydawanie"
+description: "Oddziel walidację tutoriala od CI Twojego projektu i decyzji o publikacji."
+---
+
+## Cel
+
+Uruchamiać powtarzalne kontrole lokalnie. Są tu **dwa osobne mechanizmy**:
+`just tutorial-ci` sprawdza ten poradnik, a `ci:` w workflow sprawdza kod
+projektu zarządzanego przez AI Workflow Engine.
+
+## Krok po kroku
+
+### CI samego tutoriala
+
+W głównym katalogu repozytorium:
+
+```bash
+just tutorial-ci
+```
+
+Komenda instaluje zależności z lockfile, sprawdza strukturę lekcji i lokalne
+odnośniki, kompiluje MDX i aplikację, sprawdza TypeScript oraz wykonuje smoke test
+zbudowanego serwera. Nie uruchamia agentów ani niczego nie publikuje.
+
+Osobne polecenia znajdziesz przez `just --list` i `just --justfile tutorial/justfile --list`.
+
+### CI zarządzanego projektu
+
+1. Najpierw ustal rzeczywiste komendy testów Twojego projektu i uruchom je ręcznie.
+   Nie kopiuj `go test ./...` do projektu, który nie jest w Go.
+2. W repozytorium Git z gałęzią integracyjną i commitami dodaj do `workflow.yaml`
+   blok dopasowany do projektu. Przykład dla projektu z testami Go:
+
+```yaml
+ci:
+  timeout: 20m
+  run:
+    - go vet ./...
+    - go test ./...
+```
+
+3. Przeczytaj planowane polecenia. `ci.run` wykonuje prawdziwy kod.
+   Nie dodawaj publikowania, usuwania danych ani operacji na produkcji.
+4. Zobacz status i — gdy projekt jest gotowy — uruchom CI:
+
+```bash
+issue-cli --project nauka ci status
+issue-cli --project nauka ci run
+```
+
+Runner korzysta z tmux i osobnego checkoutu `.worktrees/.ci`.
+Pracuje na **zintegrowanym kodzie gałęzi**, nie na niezapisanych zmianach
+Twojego edytora. Wyniki trafiają do `.ci/`; UI pokazuje stan na **Status**.
+Gdy viewer obserwuje projekt z włączonym CI, reaguje na zmiany gałęzi integracyjnej.
+
+### Przed wydaniem
+
+Sprawdź status CI na aktualnym commicie, zadania milestone, dokumentację,
+dowody i zmiany w changelogu. **Waiting for release** pomaga je zebrać,
+ale nie jest przyciskiem gwarantującym bezpieczeństwo publikacji.
+
+Szablon development przewiduje commit/push w shipping. Ten silnik ma własny
+proces lokalnej integracji i wydania milestone. Zanim zlecisz shipping agentowi,
+sprawdź prompt w **swoim** workflow i ustal, co wolno mu opublikować.
+Poradnik celowo nie uruchamia `release publish`, `git push` ani merge.
+
+## Oczekiwany wynik
+
+Wiesz, co sprawdza `just`, a co `issue-cli ci`, i potrafisz powiązać zielony wynik
+z konkretnym kodem. Publikacja pozostaje oddzielną decyzją.
+
+## Źródła
+
+[Lokalne CI w workflow](/sources/docs/workflow.md) ·
+[CLI CI i wydania](/sources/docs/CLI/overview.md) ·
+[Konfiguracja CI](/sources/internal/tracker/ci.go) ·
+[Makefile silnika](/sources/Makefile)

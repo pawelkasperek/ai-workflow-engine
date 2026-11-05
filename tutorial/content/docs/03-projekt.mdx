@@ -1,0 +1,76 @@
+---
+title: "3. Skonfiguruj własny projekt"
+description: "Przygotuj osobne repozytorium ćwiczeniowe i połącz je z tablicą."
+---
+
+## Cel
+
+Oddzielić aplikację od projektu, którym zarządzasz. Ćwiczenia wykonujemy
+w nowym `~/awe-nauka`, nie w repozytorium silnika.
+
+## Krok po kroku
+
+1. Utwórz pusty katalog. Jeżeli zawiera ważne dane, wybierz inną nazwę.
+
+```bash
+mkdir -p ~/awe-nauka
+cd ~/awe-nauka
+git init
+issue-cli init --template development
+```
+
+`init` tworzy `workflow.yaml`, `issues/` i `docs/`. Inne szablony to `review`
+i `writing`. Nie dodawaj `--force` bez sprawdzenia plików: pozwala nadpisać workflow.
+
+2. W `~/awe-nauka/projects.yaml` zapisz:
+
+```yaml
+terminal: none
+projects:
+  - name: "Nauka aplikacji"
+    slug: "nauka"
+    issues: "./issues"
+    docs: "./docs"
+    workflow: "./workflow.yaml"
+    workdir: "."
+```
+
+Ścieżki są rozwiązywane względem katalogu konfiguracji.
+Jawne `workflow` zapobiega użyciu przypadkowego pliku.
+`terminal: none` nie otwiera okna — sesję tmux otworzysz sam.
+
+3. Sprawdź konfigurację i uruchom tablicę:
+
+```bash
+issue-cli --config projects.yaml projects
+issue-viewer -config projects.yaml -port 10770
+```
+
+4. W drugim terminalu przejdź do `~/awe-nauka`. Wskaż konfigurację dla tej sesji,
+   aby nie polegać na konfiguracji zapisanej przez inne uruchomienie UI:
+
+```bash
+export ISSUE_VIEWER_CONFIG="$HOME/awe-nauka/projects.yaml"
+issue-cli --project nauka process workflow
+```
+
+## Drugi projekt
+
+Dodaj do listy `projects` wpis z **innym** slugiem i istniejącymi katalogami,
+np. `../drugi-projekt/issues`, `../drugi-projekt/docs`, `../drugi-projekt/workflow.yaml`
+i `workdir: ../drugi-projekt`. Uruchom viewer ponownie.
+
+Przy dwóch projektach `/` pokazuje listę. Przy jednym przekierowuje do `/p/nauka/`.
+`issue-cli --project nauka ...` wybiera projekt jawnie.
+
+## Oczekiwany wynik
+
+Viewer otwiera pusty projekt „Nauka aplikacji”, a `process workflow` pokazuje
+**Twój** plik. Jeśli widzisz inne zadania, sprawdź `issue-cli projects`
+i `ISSUE_VIEWER_CONFIG`, zanim cokolwiek zapiszesz.
+
+## Źródła
+
+[Bootstrap i konfiguracja](/sources/docs/getting-started.md) ·
+[Przykład projects.yaml](/sources/projects.yaml.example) ·
+[Rozwiązywanie ścieżek](/sources/internal/tracker/project.go)

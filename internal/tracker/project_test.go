@@ -293,7 +293,7 @@ func TestLoadProjects_ViewerURL(t *testing.T) {
 		}
 	}
 
-	for _, bad := range []string{"localhost:8080", "ftp://host", "http://"} {
+	for _, bad := range []string{"localhost:10770", "ftp://host", "http://"} {
 		os.WriteFile(fp, []byte("viewer_url: \""+bad+"\"\nprojects:\n  - name: \"A\"\n"), 0644)
 		if _, err := LoadProjects(fp); err == nil || !strings.Contains(err.Error(), "viewer_url") {
 			t.Errorf("viewer_url %q: want a config error naming viewer_url, got %v", bad, err)

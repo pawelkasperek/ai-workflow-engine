@@ -19,7 +19,7 @@ install:
 	@echo "Installed issue-cli and issue-viewer $(VERSION) via go install"
 
 demo: build
-	./issue-viewer -config demo/projects.yaml -port 8080
+	./issue-viewer -config demo/projects.yaml -port 10770
 
 clean:
 	rm -f issue-viewer issue-cli cover.out

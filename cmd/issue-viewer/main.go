@@ -50,7 +50,7 @@ func run(args []string) error {
 	dir := fs.String("dir", "./issues", "Directory containing issue markdown files (single-project mode)")
 	docsDir := fs.String("docs", "./docs", "Directory containing documentation markdown files (single-project mode)")
 	host := fs.String("host", defaultHost, "Interface to listen on; anything but loopback exposes agent dispatch to the network")
-	port := fs.Int("port", 8080, "Port to listen on")
+	port := fs.Int("port", 10770, "Port to listen on")
 	versionFlag := fs.Bool("version", false, "Print version and exit")
 	if err := fs.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {

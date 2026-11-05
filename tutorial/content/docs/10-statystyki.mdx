@@ -1,0 +1,57 @@
+---
+title: "10. Czytaj Timeline, Stats i Health"
+description: "Zobacz czas oczekiwania, historię zadania i kondycję projektu bez nadinterpretacji danych."
+---
+
+## Cel
+
+Odróżnić faktycznie zarejestrowaną historię od szacunków oraz braku danych.
+Nowy projekt nie ma jeszcze trendów.
+
+## Krok po kroku
+
+1. W zadaniu otwórz **Timeline**. Sprawdź przejścia, zgody, komentarze i wywołania
+   CLI. Filtry pozwalają skupić się na decyzjach człowieka, testach lub commitach.
+2. Przeczytaj podział na pracę agenta, oczekiwanie na Ciebie i bezczynność.
+   Jest wyprowadzany z aktywności — nie jest pomiarem czasu CPU ani pełnym zapisem rozmów.
+3. Otwórz **More → Stats** lub `/p/nauka/stats`.
+   Zmieniaj zakres `7d`, `30d`, `90d`, `all` i grupowanie:
+   typ pracy, system, epic, wersja.
+4. Kliknij element wykresu lub otwórz tabelę, aby zobaczyć zadania stojące za wynikiem.
+   Nie wyciągaj wniosków o wydajności na podstawie jednego długiego zadania.
+5. W repozytorium Git otwórz **Health**. Aby zebrać aktualny snapshot:
+
+```bash
+issue-cli --project nauka health snapshot
+issue-cli --project nauka health
+```
+
+Polecenie zbiera i zapisuje dane projektu; uruchom je świadomie.
+Snapshoty są przechowywane w `.health/snapshots/`. Trend wymaga historii,
+więc pojedynczy pomiar nie tworzy sensownej linii.
+
+6. Przy wielu projektach otwórz główne `/stats`, by porównać ich snapshoty.
+
+## Jak interpretować dane
+
+- **No data yet** znaczy brak źródła lub historii, nie zero czasu czy kosztu.
+- Koszt tokenów workflow to przybliżenie oparte o długość tekstu,
+  nie faktura od dostawcy modelu. `actual_tokens` pozostaje polem na przyszłe dane.
+- Czasy oczekiwania wynikają z wywołań CLI i zgód. Rozmowa poza tym śladem
+  może nie być widoczna.
+- Brak `issue-cli` w `PATH` viewera może wyłączyć fragment raportu użycia CLI,
+  choć reszta statystyk działa.
+- **Health review** to opinia agenta obok pomiarów, nie bezdyskusyjna ocena.
+  Przycisk uruchomienia review rzeczywiście rozpoczyna pracę agenta.
+
+## Oczekiwany wynik
+
+Potrafisz wskazać źródło liczby i rozpoznać brak danych. Używasz trendów
+do pytań o proces, np. „dlaczego długo czekamy na zgodę?”, nie do udawanej
+dokładności rozliczeń.
+
+## Źródła
+
+[Stats i Timeline](/sources/docs/workflow-stats.md) ·
+[Health i snapshoty](/sources/docs/workbench-files.md) ·
+[Handler Stats](/sources/cmd/issue-viewer/handlers_stats.go)

@@ -19,7 +19,7 @@ go build
 ./my-project -config projects.yaml
 ```
 
-Open `http://localhost:8080` in your browser.
+Open `http://localhost:10770` in your browser.
 
 ## Creating Your First Issue
 

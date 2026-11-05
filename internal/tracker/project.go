@@ -190,7 +190,7 @@ type ProjectsConfig struct {
 	// ViewerURL is the address the viewer is reached at, used for every
 	// link the viewer and issue-cli print (approval hints, Timeline, ...)
 	// and for the calls issue-cli makes to it. Unset, issue-cli uses the
-	// running viewer's own address (viewer.json), then http://localhost:8080.
+	// running viewer's own address (viewer.json), then http://localhost:10770.
 	ViewerURL string `yaml:"viewer_url"`
 	// AllowedHosts are the Host names the viewer answers to besides
 	// loopback (localhost, 127.0.0.1, [::1], *.localhost): a LAN or VPN

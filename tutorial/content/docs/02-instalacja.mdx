@@ -1,0 +1,77 @@
+---
+title: "2. Zainstaluj oba programy"
+description: "Sprawdź wymagania i zbuduj wersję z tego repozytorium."
+---
+
+## Cel
+
+Mieć `issue-viewer` i `issue-cli` dostępne w terminalu. Gotowe wydania są
+przeznaczone dla Linux i macOS. Do samej tablicy nie potrzebujesz klienta AI.
+
+## Krok po kroku
+
+### Wariant A: aktualny kod
+
+1. W katalogu repozytorium sprawdź Go i zbuduj oba programy:
+
+```bash
+go version
+make build build-cli
+./issue-viewer -version
+./issue-cli version
+```
+
+Wymaganie Go sprawdzisz w `go.mod`; README opisuje minimum 1.25.
+Po refaktoryzacji entrypoint UI jest w `cmd/issue-viewer`, dlatego samo
+`go build .` nie jest poprawną komendą.
+
+2. Zainstaluj wersję:
+
+```bash
+make install
+go env GOPATH
+```
+
+`go install` umieszcza programy w `GOBIN`, a gdy go nie ustawiono — w
+`$(go env GOPATH)/bin`. Dodaj odpowiedni katalog do swojego `PATH`.
+Typowy przykład dla bieżącej sesji:
+
+```bash
+export PATH="$(go env GOPATH)/bin:$PATH"
+command -v issue-cli
+command -v issue-viewer
+issue-cli version
+issue-viewer -version
+```
+
+Przy kilku instalacjach `command -v` pokaże, której używasz.
+
+### Wariant B: gotowe wydanie
+
+Pobierz archiwum dla swojego systemu z wydań upstream
+`michal-franc/ai-workflow-engine`, rozpakuj **oba** programy i umieść je w `PATH`.
+README opisuje też `install.sh`, który instaluje do `~/.local/bin`.
+Wydanie upstream nie musi zawierać lokalnych zmian tej gałęzi.
+
+### Przed pracą z agentami
+
+```bash
+git --version
+tmux -V
+command -v claude
+command -v codex
+```
+
+Wystarczy jeden klient AI. Skonfiguruj go i uwierzytelnij osobno.
+Dispatch wymaga tmux 3.2 lub nowszego.
+
+## Oczekiwany wynik
+
+Oba polecenia wersji działają z dowolnego katalogu. Przejdź do
+[własnego projektu](/docs/03-projekt). Klienta AI możesz skonfigurować później.
+
+## Źródła
+
+[Instalacja](/sources/docs/getting-started.md) ·
+[Cele build i install](/sources/Makefile) · [Wymagania Go](/sources/go.mod) ·
+[Wymagania dispatchu](/sources/docs/agent-dispatch.md)

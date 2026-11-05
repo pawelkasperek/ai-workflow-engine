@@ -1,0 +1,92 @@
+---
+title: "12. Rozwiązywanie problemów"
+description: "Sprawdzaj konfigurację, slug i wymagania przed ponownym uruchamianiem pracy."
+---
+
+## Cel
+
+Zdiagnozować problem bez kasowania danych, omijania bramek ani uruchamiania
+kolejnych agentów na ślepo.
+
+## Krok po kroku
+
+1. Zapisz dokładną komendę, komunikat błędu i wersję programu.
+2. Sprawdź, czy jesteś w odpowiednim katalogu oraz projekcie:
+
+```bash
+pwd
+command -v issue-cli
+issue-cli version
+issue-cli projects
+issue-cli --debug --project nauka list --all
+```
+
+3. Wybierz odpowiednią ścieżkę poniżej. Po naprawie ponów najpierw odczyt
+   lub `--dry-run`, a nie od razu mutację.
+
+## „Widzę inne zadania” lub „no projects config found”
+
+`--config` i `--project` są flagami globalnymi — podawaj je **przed komendą**:
+
+```bash
+issue-cli --config "$HOME/awe-nauka/projects.yaml" --project nauka list --all
+```
+
+CLI sprawdza m.in. flagę, `ISSUE_VIEWER_CONFIG`, lokalny `projects.yaml`,
+stan viewera i konfigurację użytkownika. Zapis viewera może pozostać użyteczny
+po jego zatrzymaniu. Jawna konfiguracja usuwa niejednoznaczność.
+
+## Nie ma ekranu wyboru projektu
+
+Przy jednym projekcie to oczekiwane przekierowanie. Dodaj drugi poprawny wpis
+z unikalnym slugiem i uruchom viewer ponownie.
+
+## Zadanie zniknęło z Board
+
+Sprawdź **List**, filtry wersji/systemu i `board.columns` w workflow.
+Status pominięty w kolumnach nie znaczy, że plik został usunięty.
+
+## „ambiguous slug”
+
+CLI dopuszcza skróty, ale przy wielu dopasowaniach odmawia zapisu.
+Użyj pełnego sluga z `issue-cli list --all`, np. `ui/dodaj-przelacznik-motywu`.
+
+## Brakuje zatwierdzenia
+
+Uruchom `transition <slug> --to "<status>" --dry-run`, odczytaj pozostałe wymagania
+i otwórz właściwą zgodę. Nie ustawiaj `human_approved` ręcznie.
+Dispatch z kodem `3` oznacza oczekiwanie na bramkę, nie awarię klienta AI.
+
+## Agent nie startuje albo nie ma nowego promptu
+
+Sprawdź tmux i `PATH` serwera, log startu oraz konfigurację `terminal`.
+`terminal: none` oznacza brak nowego okna, nie brak sesji.
+Żywa sesja powoduje dołączenie; użyj **Re-send prompt** tylko świadomie.
+Zatrzymanie viewera nie zamyka sesji agenta.
+
+## HTTP 421 lub zajęty port
+
+Korzystaj z `localhost` lub `127.0.0.1`. Inna nazwa hosta wymaga
+`allowed_hosts` w konfiguracji. Nie wyłączaj zabezpieczeń „na próbę”.
+Gdy port jest zajęty, użyj `-port 10771`.
+Nie udostępniaj UI publicznie: jego przyciski mogą uruchamiać programy na komputerze.
+
+## Problem dotyczy tutoriala
+
+Port poradnika to `10780`, nie `10770`. Uruchom `just tutorial-ci`.
+Jeśli port 10780 jest zajęty, zatrzymaj własny proces albo uruchom
+z `tutorial/`: `npm run dev -- --port 10781` i otwórz nowy adres.
+Sprawdź wymaganą wersję Node w `tutorial/package.json`.
+
+## Oczekiwany wynik
+
+Znasz przyczynę albo masz minimalny opis do zgłoszenia: wersję, kroki,
+oczekiwany i rzeczywisty wynik. Nie zamieszczaj sekretów, pełnych logów rozmów
+ani prywatnej konfiguracji w publicznym zgłoszeniu.
+
+## Źródła
+
+[Konfiguracja i hosty](/sources/docs/getting-started.md) ·
+[Błędy i flagi CLI](/sources/docs/CLI/overview.md) ·
+[Diagnostyka dispatchu](/sources/docs/agent-dispatch.md) ·
+[Ochrona origin i host](/sources/cmd/issue-viewer/origin.go)

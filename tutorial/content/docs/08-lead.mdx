@@ -1,0 +1,73 @@
+---
+title: "8. Lead, pracownicy i worktrees"
+description: "Organizacja pracy kilku osób lub agentów bez mieszania katalogów."
+---
+
+## Cel
+
+Rozumieć różnicę między rozmową z leadem projektu a wykonaniem jednego zadania
+przez pracownika. Nie potrzebujesz leada do podstawowej obsługi tablicy.
+
+## Krok po kroku
+
+1. Zanim zwiększysz liczbę agentów, ukończ jedno zadanie z jednym pracownikiem.
+   Upewnij się, że znasz koszty i sposób zatwierdzania.
+2. Aby rozpocząć sesję leada w wybranym projekcie:
+
+```bash
+issue-cli --project nauka lead spawn
+issue-cli --project nauka lead list
+```
+
+Możesz też użyć **Spawn lead** w UI. W headless CLI wypisze instrukcje dołączenia.
+Lead ma sesję `lead-<projekt>`, a pracownicy obsługują poszczególne zadania.
+
+3. Powiedz leadowi konkretnie, czego oczekujesz, np. „Przejrzyj opis tego zadania
+   i zaproponuj projekt; nie uruchamiaj jeszcze pracownika”.
+4. Gdy chcesz zlecić wykonanie, wskaż konkretne zadanie i agenta.
+   Lead nie powinien sam wybierać kolejnych zadań i uruchamiać pracy.
+5. Decyzję o zgodzie podejmujesz Ty. Lead może zarejestrować zgodę udzieloną
+   w rozmowie przez `approve`, zapisując Twoje słowa. Pracownik nie zatwierdza
+   sam własnej pracy.
+
+## Izolacja kodu przez worktree
+
+W docelowym repozytorium z istniejącym commitem możesz włączyć w `workflow.yaml`:
+
+```yaml
+worktree: true
+```
+
+Przed włączeniem uporządkuj i sprawdź stan Git. Dispatch tworzy wtedy
+`.worktrees/<slug>` i gałąź `work/<slug>`. Zadania pozostają w głównym checkoutcie,
+a kod pracownika jest izolowany. Opcjonalne `worktree_setup` uruchamia polecenie
+przygotowania nowego katalogu — używaj wyłącznie komend, które rozumiesz.
+Nie włączaj tej opcji w pustym repozytorium bez commita.
+
+Worktree nie definiuje polityki merge i push. Ustal ją jawnie w workflow:
+szablon development przewiduje commit/push, natomiast ten silnik ma własny proces
+lokalnej integracji. Nie przenoś jednej polityki bezmyślnie do drugiego projektu.
+
+## Jedna sesja tmux na projekt
+
+W `projects.yaml` możesz ustawić na poziomie głównym:
+
+```yaml
+terminal: none
+tmux_session_per_project: true
+```
+
+Po ponownym uruchomieniu viewera lead i pracownicy kolejnych dispatchów korzystają
+z okien sesji projektu. To porządkuje terminal, ale nie zastępuje izolacji kodu.
+Nie usuwaj worktree ani gałęzi, dopóki nie sprawdzisz niezapisanych zmian.
+
+## Oczekiwany wynik
+
+Wiesz, kto koordynuje, kto wykonuje i kto zatwierdza. Potrafisz wskazać katalog
+pracy agenta i nie mylisz go z miejscem przechowywania zadań.
+
+## Źródła
+
+[Rola leada](/sources/docs/patterns/lead-session.md) ·
+[Worktrees i sesje wspólne](/sources/docs/agent-dispatch.md) ·
+[Lead CLI](/sources/cmd/issue-cli/cmd_lead.go)

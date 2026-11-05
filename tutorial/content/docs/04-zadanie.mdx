@@ -1,0 +1,60 @@
+---
+title: "4. Utwórz i opisz pierwsze zadanie"
+description: "Od pomysłu do zadania z jasnym zakresem i oczekiwanym rezultatem."
+---
+
+## Cel
+
+Zapisać konkretne zadanie i wiedzieć, gdzie aplikacja przechowuje jego dane.
+Polecenia wykonuj w `~/awe-nauka`.
+
+## Krok po kroku
+
+1. Utwórz zadanie:
+
+```bash
+issue-cli --project nauka create --title "Dodaj przelacznik motywu" --system UI
+issue-cli --project nauka list --all
+```
+
+Zapisz slug wypisany przez CLI. Dalej używamy `ui/dodaj-przelacznik-motywu`.
+System jest częścią sluga; nie zgaduj go na podstawie nazwy pliku.
+
+2. W UI otwórz **List** i kliknij tytuł zadania. Otrzyma pierwszy status
+   workflow — w development jest to `idea`.
+3. Uzupełnij opis w edytorze lub przez CLI:
+
+```bash
+issue-cli --project nauka append ui/dodaj-przelacznik-motywu --body "Uzytkownik powinien moc zmienic jasny motyw na ciemny. Wybor ma przetrwac odswiezenie strony. Nie zmieniamy logowania ani ustawien konta."
+issue-cli --project nauka show ui/dodaj-przelacznik-motywu
+```
+
+4. Doprecyzuj dla kogo jest zmiana, jak rozpoznasz sukces, czego nie obejmuje
+   i jak ją sprawdzisz — np. zmianę motywu i odświeżenie strony.
+5. Dodaj komentarz:
+
+```bash
+issue-cli --project nauka comment ui/dodaj-przelacznik-motywu --text "progress: Opis i zakres gotowe do omowienia."
+issue-cli --project nauka context ui/dodaj-przelacznik-motywu
+```
+
+## Co zapisuje się na dysku
+
+Zadanie to `.md` pod `issues/`, zwykle w podkatalogu systemu.
+Frontmatter zawiera m.in. `title`, `status`, `system`, `priority` i `created`.
+Komentarze są częścią pliku. Później obok mogą powstać sidecary danych i statystyk.
+
+Nie zmieniaj ręcznie statusu ani zgód, aby ominąć walidacje. Do przejść służą
+UI i `issue-cli transition`. Dla długich opisów z kodem używaj `--body-file`,
+żeby powłoka nie interpretowała backticków.
+
+## Oczekiwany wynik
+
+To samo zadanie i komentarz widzisz w UI oraz `show`. Odświeżenie strony nie usuwa
+danych. Teraz [poznaj widoki](/docs/05-interfejs).
+
+## Źródła
+
+[Format zadań](/sources/docs/issue-format.md) ·
+[CLI: create, append, comment i slug](/sources/docs/CLI/overview.md) ·
+[Kod tworzenia](/sources/cmd/issue-cli/cmd_create.go)

@@ -6,7 +6,7 @@
 # engine_project: issue-viewer      # where `issue-cli report-bug` files issue-cli bugs (default: the project with repo michal-franc/ai-workflow-engine)
 # allowed_hosts:                    # Host names the viewer answers to besides localhost, 127.0.0.1, [::1], *.localhost (others get 421)
 #   - viewer.lan
-# viewer_url: "https://viewer.lan"  # the address every link and issue-cli call uses (default: the running viewer's, then http://localhost:8080); its host is allowed too
+# viewer_url: "https://viewer.lan"  # the address every link and issue-cli call uses (default: the running viewer's, then http://localhost:10770); its host is allowed too
 #
 # One terminal with tmux (e.g. a Mac): set both, then `tmux attach -t <slug>`
 # and use prefix s to switch project. See docs/agent-dispatch.md.

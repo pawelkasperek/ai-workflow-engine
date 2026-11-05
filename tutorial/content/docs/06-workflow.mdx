@@ -1,0 +1,76 @@
+---
+title: "6. Workflow i zatwierdzenia"
+description: "Sprawdź wymagania kolejnego kroku zamiast ręcznie zmieniać status."
+---
+
+## Cel
+
+Rozumieć, dlaczego zadania nie zawsze da się przesunąć dalej. Używamy szablonu
+**development**. Workflow repozytorium silnika jest dostosowany i może mieć inne reguły.
+
+## Krok po kroku
+
+1. W `~/awe-nauka` sprawdź proces:
+
+```bash
+issue-cli --project nauka process workflow
+issue-cli --project nauka process transitions ui/dodaj-przelacznik-motywu
+issue-cli --project nauka checklist ui/dodaj-przelacznik-motywu
+```
+
+Typowa ścieżka to `idea → in design → backlog → in progress → testing →
+human-testing → documentation → shipping → done`.
+
+2. Podejmij zadanie i sprawdź przejście bez zapisywania zmiany:
+
+```bash
+issue-cli --project nauka start ui/dodaj-przelacznik-motywu
+issue-cli --project nauka transition ui/dodaj-przelacznik-motywu --to "in design" --dry-run
+```
+
+3. Jeśli opis jest gotowy i walidacja pozwala, wykonaj przejście:
+
+```bash
+issue-cli --project nauka transition ui/dodaj-przelacznik-motywu --to "in design"
+issue-cli --project nauka show ui/dodaj-przelacznik-motywu
+```
+
+Workflow dopisuje sekcje, np. `Idea`, `Design`, `Acceptance Criteria`.
+Przeczytaj je — checkboxy nie zastępują projektu rozwiązania.
+
+4. Zapisz projekt i konkretne kryteria akceptacji. Zaznaczaj checklistę dopiero,
+   gdy punkt jest wykonany. Odczytaj identyfikatory przez `checklist`.
+   `issue-cli check ... D1 D2` zaznacza punkty, nie wykonuje pracy.
+   Kryteria objęte `criteria_proven` wymagają [dowodów](/docs/09-dowody).
+5. Sprawdź kolejny etap:
+
+```bash
+issue-cli --project nauka transition ui/dodaj-przelacznik-motywu --to backlog --dry-run
+```
+
+## Co robi człowiek przy bramce
+
+Gdy jedyną przeszkodą jest zgoda, otwórz zadanie, sprawdź projekt i wymagania,
+a następnie zaznacz zgodę **dla właściwego statusu docelowego**, np. `backlog`.
+Zapisz zakres zgody, jeśli formularz o to prosi. Jeśli czegoś brakuje,
+zostaw komentarz i nie zatwierdzaj.
+
+W development ważne zgody dotyczą m.in. `backlog`, `in progress`,
+`documentation` i `done`. Kieruj się aktualnym workflow i komunikatem CLI.
+Zgoda z innego etapu nie jest uniwersalnym zezwoleniem.
+
+Agent przy bramce pyta i kończy turę. Zatwierdzenie w UI może go wznowić,
+ale nie zastępuje pozostałych walidacji.
+`start` ze stanu handoff, np. backlog, może po zgodzie przejść dalej;
+CLI wyraźnie ogłosi `AUTO-ADVANCED`.
+
+## Oczekiwany wynik
+
+Odróżniasz brak treści, niegotową checklistę i brak zgody. Bez implementacji
+i testów zatrzymaj ćwiczenie w projekcie zamiast „przeklikiwać” je do done.
+
+## Źródła
+
+[Szablon development](/sources/cmd/issue-cli/templates/workflow/development.yaml) ·
+[CLI: start, check i transition](/sources/docs/CLI/overview.md) ·
+[Workflow](/sources/docs/workflow.md)

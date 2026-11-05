@@ -1,0 +1,66 @@
+---
+title: "7. Uruchom Claude lub Codex"
+description: "Świadomy dispatch jednego zadania, sesja tmux i postępowanie przy bramce."
+---
+
+## Cel
+
+Uruchomić **jednego** pracownika dla wybranego zadania. Ten etap jest opcjonalny:
+klient AI musi być zainstalowany, uwierzytelniony i gotowy do użycia w Twoim projekcie.
+Pusty projekt ćwiczeniowy nie zawiera implementacji aplikacji — przed zleceniem
+realnej zmiany przygotuj w nim małą aplikację lub wybierz własne repozytorium testowe.
+
+## Krok po kroku
+
+1. Sprawdź `tmux -V`, `command -v claude` albo `command -v codex`.
+   Viewer musi widzieć wybranego klienta w swoim środowisku.
+2. Odczytaj briefing **bez uruchamiania sesji**:
+
+```bash
+issue-cli --project nauka dispatch-prompt ui/dodaj-przelacznik-motywu
+```
+
+3. Sprawdź zakres, katalog pracy, status i następny krok. Nie uruchamiaj agenta
+   z niejasnym zadaniem lub przypadkowymi uprawnieniami.
+4. Otwórz zadanie w viewerze i kliknij **Claude** albo **Codex**. Alternatywnie,
+   jeśli świadomie chcesz rozpocząć pracę z terminala:
+
+```bash
+issue-cli --project nauka dispatch ui/dodaj-przelacznik-motywu --agent claude --quote "Uruchom Claude tylko dla zadania dodania przelacznika motywu."
+```
+
+Dla Codex zmień `--agent` i treść polecenia człowieka. `--quote` zapisuje intencję
+uruchomienia w komentarzu `dispatch:`; nie jest kluczem API ani flagą omijającą zgody.
+
+5. Przy `terminal: none` użyj polecenia **From a shell** wypisanego przez aplikację.
+   Jeśli jesteś już w tmux, użyj **Inside tmux**, zamiast zagnieżdżać `attach`.
+   Nazwa sesji zależy od sluga i konfiguracji; skopiuj wynik, nie zgaduj.
+6. Obserwuj rozmowę i **More → Agents**. Gdy agent poprosi o decyzję,
+   przeczytaj dowody i zastosuj [reguły zatwierdzeń](/docs/06-workflow).
+
+## Kiedy nic się nie uruchamia
+
+Jeśli jedyną przeszkodą jest zgoda na kolejny etap, dispatch odmawia startu:
+UI pokazuje **Waiting on your approval**, a CLI kończy się kodem `3`.
+Otwórz wskazaną zgodę. `--force` nie jest standardową naprawą tej sytuacji.
+
+Ponowne kliknięcie przy żywej sesji **dołącza do niej**, nie wysyła ponownie promptu.
+**Re-send prompt** służy do świadomego ponowienia briefingu w istniejącej sesji.
+Najpierw sprawdź, co agent już zrobił.
+
+## Zatrzymanie i dalsza kontrola
+
+Ctrl+C w terminalu viewera zatrzymuje viewer, **nie** agentów tmux. Aby przerwać
+pracę, przejdź do właściwego panelu agenta i użyj Ctrl+C. Odłączenie od tmux
+pozostawia sesję działającą. Nie zamykaj wszystkich sesji tmux globalnym poleceniem.
+
+## Oczekiwany wynik
+
+Widzisz dokładnie jednego pracownika z właściwym zadaniem i potrafisz do niego wrócić.
+Aplikacja nie jest harmonogramem: nie uruchamiaj agentów w pętli ani przez cron.
+
+## Źródła
+
+[Dispatch i tmux](/sources/docs/agent-dispatch.md) ·
+[Komenda dispatch](/sources/cmd/issue-cli/cmd_dispatch.go) ·
+[Wspólny launcher](/sources/internal/agentrun/dispatch.go)

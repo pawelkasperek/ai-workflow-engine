@@ -90,7 +90,7 @@ func Read() (State, error) {
 
 // DefaultURL is the viewer's address when nothing says otherwise: the
 // default -port on localhost.
-const DefaultURL = "http://localhost:8080"
+const DefaultURL = "http://localhost:10770"
 
 // BaseURL is the viewer's base URL, without a trailing slash: configured
 // (projects.yaml's viewer_url) when set, else the URL in viewer.json when

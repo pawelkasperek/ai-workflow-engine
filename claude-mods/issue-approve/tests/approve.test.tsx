@@ -14,8 +14,8 @@ const ENV: Record<string, string> = {
 // The board's address comes from `issue-cli projects --json`, like every
 // issue-cli link.
 const PROJECTS = JSON.stringify([
-  { slug: 'other', viewer_url: 'http://board:8080' },
-  { slug: 'proj', viewer_url: 'http://board:8080/', active: true },
+  { slug: 'other', viewer_url: 'http://board:10770' },
+  { slug: 'proj', viewer_url: 'http://board:10770/', active: true },
 ])
 const isProjects = (argv: readonly string[]) => argv[0] === 'issue-cli' && argv.includes('projects')
 
@@ -54,7 +54,7 @@ test('shows the issue approvals and approves on press', async ($, on) => {
   expect((await ui.find({ type: 'Text', text: /Human approval · in design/ }))?.text).toBeDefined()
   expect((await ui.find({ key: 'backlog' }))?.text).toBe('☐ backlog')
   await ui.press({ key: 'in progress' })
-  expect(posts).toEqual(['http://board:8080/p/proj/issue/ui/foo/approve {"status":"in progress"}'])
+  expect(posts).toEqual(['http://board:10770/p/proj/issue/ui/foo/approve {"status":"in progress"}'])
   expect((await ui.find({ key: 'in progress' }))?.text).toBe('☑ in progress')
   await ui.unmount()
 })
@@ -97,8 +97,8 @@ test('without ISSUE_VIEWER_PROJECT it asks the board which project the folder is
   await $.session.start({ cwd: '/w/proj/.worktrees/ui/foo', surface: 'terminal', isInteractive: true })
   expect(runs[0]).toBe('issue-cli projects --json')
   expect(urls).toEqual([
-    'http://localhost:8080/project-for?cwd=%2Fw%2Fproj%2F.worktrees%2Fui%2Ffoo',
-    'http://localhost:8080/p/proj/issue/ui/foo/approvals.json',
+    'http://localhost:10770/project-for?cwd=%2Fw%2Fproj%2F.worktrees%2Fui%2Ffoo',
+    'http://localhost:10770/p/proj/issue/ui/foo/approvals.json',
   ])
   const ui = await $.ui.mount({ ...BAND, surface: 'terminal' })
   expect((await ui.find({ key: 'in progress' }))?.text).toBe('☐ in progress')
@@ -291,7 +291,7 @@ test('at human-testing with a check script it offers Run checks, which asks the 
   ui = await $.ui.mount({ ...BAND, surface: 'terminal' })
   expect((await ui.find({ key: 'checks' }))?.text).toBe('▶ Run checks')
   await ui.press({ key: 'checks' })
-  expect(posts).toEqual(['http://board:8080/p/proj/issue/ui/foo/check-script'])
+  expect(posts).toEqual(['http://board:10770/p/proj/issue/ui/foo/check-script'])
   expect(toasts.at(-1)).toContain('Started check-script-ui-foo')
   await ui.unmount()
 })

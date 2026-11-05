@@ -19,7 +19,7 @@ as /p/<project>/status.json serves it.
 
 The viewer builds the page, so it must be running. Its address is viewer_url
 in projects.yaml, else the running viewer's own (viewer.json), else
-http://localhost:8080; no host is typed. Read-only.
+http://localhost:10770; no host is typed. Read-only.
 
 Not an issue's status: for that, issue-cli show <slug>.
 

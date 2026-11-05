@@ -41,7 +41,7 @@ func approvalURL(proj *tracker.Project, slug, requiredStatus string) string {
 // viewerBaseURL is the viewer's base URL without a trailing slash, for every
 // link issue-cli prints and every call it makes to the viewer: viewer_url
 // from projects.yaml, else the running viewer's address when it serves this
-// config (viewer.json), else http://localhost:8080.
+// config (viewer.json), else http://localhost:10770.
 func viewerBaseURL(proj *tracker.Project) string {
 	if proj == nil {
 		return viewerstate.BaseURL("", "")

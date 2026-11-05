@@ -1,0 +1,49 @@
+---
+title: "5. Poruszaj się po interfejsie"
+description: "Który widok otworzyć i jak czytać stan projektu oraz zadania."
+---
+
+## Cel
+
+Ustalić, co wymaga Twojej decyzji, co jest w toku i co sprawdzono.
+Punktem wyjścia niech będzie **Status**.
+
+## Krok po kroku
+
+1. Otwórz `http://localhost:10770/p/nauka/status`. **Status** zbiera rzeczy czekające
+   na Ciebie, aktywną pracę i milestone. Puste sekcje są normalne na początku.
+2. Przejdź do **Board** (`/p/nauka/workboard`). Karty pokazują statusy, znaczniki
+   uwagi i agentów. Korzystaj z dostępnego grupowania i filtrów.
+3. Wybierz **List** (`/p/nauka/`), by znaleźć zadanie po systemie, wersji lub
+   statusie. Jeśli znika z tablicy, sprawdź je tutaj.
+4. Kliknij zadanie i przejrzyj:
+   - **Issue** — opis, checklisty, etap i zatwierdzenia;
+   - **Timeline** — przebieg, wywołania CLI, oczekiwanie i zmiany;
+   - **Evidence** — dowody kryteriów, wyniki testów i materiały do sprawdzenia.
+5. Otwórz **Docs** z dokumentacją Twojego projektu.
+6. Rozwiń **More**: znajdziesz tam m.in. **Agents**, **Stats**, **Retros**,
+   **Canvas**, **Graph** i **Classic board**.
+
+## Ważne rozróżnienia
+
+- **Board** pod `/workboard` i **Classic board** pod `/board` to osobne widoki.
+  Przeciąganie kart nie oznacza pomijania workflow.
+- **Systems** pojawia się, gdy są systemy.
+- **Health** jest dostępne dla repozytorium Git.
+- **GitHub** wymaga `supports_github`; integracja nie jest domyślnie włączona.
+- **Updates** proponuje funkcje workflow opartego na szablonie.
+- `/stats` porównuje projekty, a `/p/nauka/stats` dotyczy jednego.
+
+Układ zależy od danych i konfiguracji. Nazwy odpowiadają obecnemu kodowi,
+nie przyszłym zapowiedziom z roadmapy.
+
+## Oczekiwany wynik
+
+Potrafisz przejść do zadania i dowodów, odróżniasz oba Board i wiesz, dlaczego
+niektórych zakładek jeszcze nie ma. Pełniejszy zestaw danych zobaczysz w [demo](/docs/01-demo).
+
+## Źródła
+
+[Menu i warunki widoczności](/sources/cmd/issue-viewer/nav.go) ·
+[Routing](/sources/cmd/issue-viewer/routes.go) ·
+[Dokumentacja UI](/sources/docs/UI/overview.md)

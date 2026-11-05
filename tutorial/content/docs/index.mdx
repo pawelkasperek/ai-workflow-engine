@@ -1,0 +1,51 @@
+---
+title: "Zacznij tutaj"
+description: "Od pierwszego uruchomienia do świadomej pracy z agentami — plan nauki."
+---
+
+## Cel
+
+Po ukończeniu poradnika skonfigurujesz własny projekt, przeprowadzisz zadanie przez
+workflow i sprawdzisz wyniki. To instrukcja **obsługi aplikacji**, nie kurs React ani Go.
+
+AI Workflow Engine składa się z `issue-viewer` (lokalnego interfejsu WWW)
+i `issue-cli` (narzędzia terminalowego). Zadania to pliki Markdown, proces to
+`workflow.yaml`, a konfiguracja projektów to `projects.yaml`. Nie ma centralnej bazy danych.
+
+## Krok po kroku
+
+1. [Obejrzyj demo](/docs/01-demo) bez uruchamiania agentów.
+2. [Zbuduj lub zainstaluj aplikację](/docs/02-instalacja).
+3. [Przygotuj osobny projekt ćwiczeniowy](/docs/03-projekt).
+4. [Utwórz zadanie](/docs/04-zadanie) i [poznaj interfejs](/docs/05-interfejs).
+5. [Przećwicz workflow i zatwierdzenia](/docs/06-workflow).
+6. [Uruchom wybranego agenta](/docs/07-agenci), gdy świadomie zdecydujesz się na pracę.
+7. Poznaj [leada i worktrees](/docs/08-lead), [dowody i testy](/docs/09-dowody),
+   [statystyki](/docs/10-statystyki) oraz [lokalne CI](/docs/11-ci).
+8. Otwórz [diagnostykę](/docs/12-problemy) lub [ściągę](/docs/13-sciaga), gdy ich potrzebujesz.
+
+Na ćwiczenia podstawowe zarezerwuj około godziny. Praca agenta, testy Twojego
+projektu i zatwierdzanie zmian mogą trwać znacznie dłużej.
+
+## Zasady ćwiczeń
+
+- Poradnik działa na `http://localhost:10780`; **aplikacja Go** zwykle na `http://localhost:10770`.
+- Wykonuj polecenia w katalogu wskazanym w lekcji.
+- Nie używaj danych produkcyjnych. Załóż `~/awe-nauka`.
+- Nazwy przycisków pozostają angielskie, tak jak w rzeczywistym UI.
+- Przykładowy slug to `ui/dodaj-przelacznik-motywu`. Sprawdź wynik `create`
+  i `list`; jeśli jest inny, używaj swojego sluga.
+- Czytanie tutoriala nie wymaga kluczy API. Claude/Codex wymaga osobno
+  skonfigurowanego klienta; jego użycie może być płatne.
+- Nie zatwierdzaj pracy tylko dlatego, że agent o to prosi. Najpierw sprawdź rezultat.
+
+## Oczekiwany wynik
+
+Rozumiesz podział: **Ty podejmujesz decyzje, workflow pilnuje wymagań, agent wykonuje
+pracę, a tablica pokazuje stan**. Zacznij od demo, nie od masowego uruchamiania agentów.
+
+## Źródła
+
+[README aplikacji](/sources/README.md) ·
+[Wprowadzenie](/sources/docs/getting-started.md) ·
+[Kod konfiguracji](/sources/internal/tracker/project.go)

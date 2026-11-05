@@ -72,14 +72,14 @@ func TestListenAddr(t *testing.T) {
 		want     string
 		loopback bool
 	}{
-		{defaultHost, "127.0.0.1:8080", true},
-		{"localhost", "localhost:8080", true},
-		{"::1", "[::1]:8080", true},
-		{"0.0.0.0", "0.0.0.0:8080", false},
-		{"", ":8080", false},
-		{"192.168.1.10", "192.168.1.10:8080", false},
+		{defaultHost, "127.0.0.1:10770", true},
+		{"localhost", "localhost:10770", true},
+		{"::1", "[::1]:10770", true},
+		{"0.0.0.0", "0.0.0.0:10770", false},
+		{"", ":10770", false},
+		{"192.168.1.10", "192.168.1.10:10770", false},
 	} {
-		if got := listenAddr(tc.host, 8080); got != tc.want {
+		if got := listenAddr(tc.host, 10770); got != tc.want {
 			t.Errorf("listenAddr(%q) = %q, want %q", tc.host, got, tc.want)
 		}
 		if got := isLoopbackHost(tc.host); got != tc.loopback {
@@ -168,17 +168,17 @@ func TestHostGuard_AllowedHostsFromConfig(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	srv.allowedHosts = allowedHostsFor(defaultHost, []string{"Viewer.LAN", "box.tail1234.ts.net:8080", "[fd00::7]"})
+	srv.allowedHosts = allowedHostsFor(defaultHost, []string{"Viewer.LAN", "box.tail1234.ts.net:10770", "[fd00::7]"})
 	ts := httptest.NewServer(srv.Routes())
 	defer ts.Close()
 
 	for host, want := range map[string]int{
-		"viewer.lan:8080":       http.StatusOK,
-		"VIEWER.lan":            http.StatusOK,
-		"box.tail1234.ts.net":   http.StatusOK,
-		"[fd00::7]:8080":        http.StatusOK,
-		"sub.viewer.lan":        http.StatusMisdirectedRequest,
-		"attacker.example:8080": http.StatusMisdirectedRequest,
+		"viewer.lan:10770":       http.StatusOK,
+		"VIEWER.lan":             http.StatusOK,
+		"box.tail1234.ts.net":    http.StatusOK,
+		"[fd00::7]:10770":        http.StatusOK,
+		"sub.viewer.lan":         http.StatusMisdirectedRequest,
+		"attacker.example:10770": http.StatusMisdirectedRequest,
 	} {
 		req := mustReq(t, "GET", ts.URL+"/p/test-project/issue/bug-in-login")
 		req.Host = host
@@ -210,12 +210,12 @@ func TestHostGuard_WildcardBindAcceptsInterfaceAddresses(t *testing.T) {
 		allow []string
 		deny  []string
 	}{
-		{"0.0.0.0", []string{"192.168.1.5:8080", "[fe80::1]:8080", "localhost:8080"}, []string{"attacker.example:8080", "10.0.0.9:8080"}},
-		{"", []string{"192.168.1.5:8080"}, []string{"attacker.example"}},
+		{"0.0.0.0", []string{"192.168.1.5:10770", "[fe80::1]:10770", "localhost:10770"}, []string{"attacker.example:10770", "10.0.0.9:10770"}},
+		{"", []string{"192.168.1.5:10770"}, []string{"attacker.example"}},
 		{"::", []string{"192.168.1.5"}, []string{"attacker.example"}},
-		{"10.0.0.9", []string{"10.0.0.9:8080"}, []string{"192.168.1.5:8080", "attacker.example"}},
-		{"viewer.lan", []string{"viewer.lan:8080"}, []string{"attacker.example"}},
-		{defaultHost, []string{"localhost"}, []string{"192.168.1.5:8080"}},
+		{"10.0.0.9", []string{"10.0.0.9:10770"}, []string{"192.168.1.5:10770", "attacker.example"}},
+		{"viewer.lan", []string{"viewer.lan:10770"}, []string{"attacker.example"}},
+		{defaultHost, []string{"localhost"}, []string{"192.168.1.5:10770"}},
 	} {
 		allowed := allowedHostsFor(tc.bind, nil)
 		h := hostAllowed(allowed, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))

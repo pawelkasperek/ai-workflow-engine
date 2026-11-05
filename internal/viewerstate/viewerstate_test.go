@@ -13,7 +13,7 @@ func TestWriteRead(t *testing.T) {
 	if _, err := Read(); !errors.Is(err, os.ErrNotExist) {
 		t.Fatalf("before Write: want ErrNotExist, got %v", err)
 	}
-	want := State{Config: "/w/projects.yaml", URL: "http://127.0.0.1:8080", PID: 7, Started: time.Date(2026, 10, 22, 10, 0, 0, 0, time.UTC)}
+	want := State{Config: "/w/projects.yaml", URL: "http://127.0.0.1:10770", PID: 7, Started: time.Date(2026, 10, 22, 10, 0, 0, 0, time.UTC)}
 	if err := Write(want); err != nil {
 		t.Fatal(err)
 	}

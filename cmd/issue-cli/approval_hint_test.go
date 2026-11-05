@@ -15,7 +15,7 @@ func TestApprovalHint_DefaultURL(t *testing.T) {
 
 	got := approvalHint(proj, "fix-bug", "in progress")
 
-	want := "http://localhost:8080/p/demo/issue/fix-bug#approve-in-progress"
+	want := "http://localhost:10770/p/demo/issue/fix-bug#approve-in-progress"
 	if !strings.Contains(got, want) {
 		t.Errorf("hint missing default deep link\n  got:  %q\n  want substring: %q", got, want)
 	}
@@ -54,7 +54,7 @@ func TestViewerBaseURL_FollowsTheRunningViewer(t *testing.T) {
 	if got := issueURL(&tracker.Project{Slug: "demo", ConfigPath: cfg}, "a/b"); got != "http://127.0.0.1:9123/p/demo/issue/a/b" {
 		t.Errorf("issueURL = %q", got)
 	}
-	if got := viewerBaseURL(&tracker.Project{Slug: "demo", ConfigPath: filepath.Join(dir, "other.yaml")}); got != "http://localhost:8080" {
+	if got := viewerBaseURL(&tracker.Project{Slug: "demo", ConfigPath: filepath.Join(dir, "other.yaml")}); got != "http://localhost:10770" {
 		t.Errorf("another config's viewer: %q", got)
 	}
 }
@@ -94,7 +94,7 @@ func TestDecorateApprovalError(t *testing.T) {
 		t.Errorf("wrapped error lost errors.As(*ApprovalMissingError): %v", out)
 	}
 	msg := out.Error()
-	if !strings.Contains(msg, "http://localhost:8080/p/demo/issue/fix-bug#approve-in-progress") {
+	if !strings.Contains(msg, "http://localhost:10770/p/demo/issue/fix-bug#approve-in-progress") {
 		t.Errorf("wrapped message missing deep link; got: %q", msg)
 	}
 	if !strings.Contains(msg, `not human-approved for "in progress"`) {

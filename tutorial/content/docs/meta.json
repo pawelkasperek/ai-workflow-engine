@@ -1,0 +1,22 @@
+{
+  "title": "Obsługa aplikacji",
+  "pages": [
+    "index",
+    "---Pierwsze kroki---",
+    "01-demo",
+    "02-instalacja",
+    "03-projekt",
+    "04-zadanie",
+    "05-interfejs",
+    "---Praca krok po kroku---",
+    "06-workflow",
+    "07-agenci",
+    "08-lead",
+    "09-dowody",
+    "---Kontrola i utrzymanie---",
+    "10-statystyki",
+    "11-ci",
+    "12-problemy",
+    "13-sciaga"
+  ]
+}

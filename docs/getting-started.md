@@ -41,7 +41,7 @@ From a checkout of this repo:
 
 ```bash
 make demo
-# http://localhost:8080
+# http://localhost:10770
 ```
 
 ## Bootstrap a project
@@ -106,7 +106,7 @@ issue-viewer -config projects.yaml
 
 `allowed_hosts:` lists Host names the viewer answers to besides loopback; see [Server flags](#server-flags).
 
-`viewer_url:` is the address the viewer is reached at, e.g. `viewer_url: "https://viewer.lan"`. Every link the viewer and issue-cli print uses it, and `issue-cli status` calls it. That covers approval links, `show`'s Timeline, and the issue-approve buttons in an agent's session. Without it, issue-cli uses the running viewer's own address from `viewer.json`, then `http://localhost:8080`. Its host is added to `allowed_hosts` by itself. It doesn't change where the viewer listens: that is still `-host` / `-port`. The value must be an `http://` or `https://` URL with a host; a path prefix behind a reverse proxy is kept.
+`viewer_url:` is the address the viewer is reached at, e.g. `viewer_url: "https://viewer.lan"`. Every link the viewer and issue-cli print uses it, and `issue-cli status` calls it. That covers approval links, `show`'s Timeline, and the issue-approve buttons in an agent's session. Without it, issue-cli uses the running viewer's own address from `viewer.json`, then `http://localhost:10770`. Its host is added to `allowed_hosts` by itself. It doesn't change where the viewer listens: that is still `-host` / `-port`. The value must be an `http://` or `https://` URL with a host; a path prefix behind a reverse proxy is kept.
 
 `engine_project: <slug>` names the project that `issue-cli report-bug` files issue-cli bugs into. Without it, report-bug uses the project whose `repo:` is `michal-franc/ai-workflow-engine`; see [`report-bug`](CLI/overview.md#report-bug).
 
@@ -140,7 +140,7 @@ This mode can't set dispatch options such as `terminal`, so use a `projects.yaml
 | `-dir`     | `./issues`  | Issues directory (single-project mode)    |
 | `-docs`    | `./docs`    | Docs directory (single-project mode)      |
 | `-host`    | `127.0.0.1` | Interface to listen on                    |
-| `-port`    | `8080`      | HTTP port                                 |
+| `-port`    | `10770`      | HTTP port                                 |
 | `-version` | `false`     | Print the version and exit                |
 
 The server listens on loopback only. Its POST endpoints start agents, tmux sessions and editors on your machine, so binding to another interface (`-host 0.0.0.0`) lets anyone who can reach the port drive them; it is an explicit opt-in and the server prints a warning at startup. Writes from another site in your browser are refused either way (see [API: Design Considerations](API/overview.md#design-considerations)).
@@ -158,7 +158,7 @@ Ctrl-C (or SIGTERM) stops the server gracefully. It stops accepting connections,
 
 An edit-in-nvim session that is still open when the server stops is closed. Its changes are discarded, and the issue gets a comment saying so. Agent tmux sessions and local CI runs keep running; they don't belong to the server process.
 
-Open `http://localhost:8080` and pick a project. The sidebar on the left leads to the board, the list, decisions and the docs; **More** holds the workflow graph, the canvas, agents, retros and stats. The swatches at the bottom switch between the dark, Dracula and light themes.
+Open `http://localhost:10770` and pick a project. The sidebar on the left leads to the board, the list, decisions and the docs; **More** holds the workflow graph, the canvas, agents, retros and stats. The swatches at the bottom switch between the dark, Dracula and light themes.
 
 ## Docs pages
 

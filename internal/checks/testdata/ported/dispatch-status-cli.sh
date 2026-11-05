@@ -11,7 +11,7 @@ checks_intro "issue-cli dispatch and issue-cli status replace the raw HTTP calls
 	"an issue that only waits on your approval, and every link follows viewer_url. Five steps, about 3 minutes;" \
 	"TP9 starts a worker (a stand-in for Claude) in the sandbox and asks you to look at it in a second terminal." \
 	"" \
-	"Needs: go, tmux, curl, python3. Your viewer on :8080, your viewer.json and your tmux sessions are never touched."
+	"Needs: go, tmux, curl, python3. Your viewer on :10770, your viewer.json and your tmux sessions are never touched."
 
 cd "$CHECKS_ROOT" || exit 2
 sandbox_dir
@@ -145,12 +145,12 @@ step TP8 "Links follow viewer_url" \
 	--what "the sandbox projects.yaml sets viewer_url: $base. show's Timeline link, an approval link, and projects --json." \
 	--why "changing the port or hostname used to mean editing every brief and permission file; now it is one key." \
 	--look "the URLs printed." \
-	--expect "every URL starts with $base, never localhost:8080."
+	--expect "every URL starts with $base, never localhost:10770."
 run cli show gated
 expect '[[ $out == *"Timeline: $base/p/sand/issue/gated?tab=timeline"* ]]' "show links the Timeline on the sandbox board"
 run cli --json projects
 expect '[[ $out == *"\"viewer_url\": \"$base\""* ]]' "projects --json names viewer_url (what the issue-approve mod reads)"
-expect '[[ $out != *"localhost:8080"* ]]' "nothing points at localhost:8080"
+expect '[[ $out != *"localhost:10770"* ]]' "nothing points at localhost:10770"
 
 # ── TP4 ──────────────────────────────────────────────────────────────
 step TP4 "Dispatch refuses an issue that only waits on you" \

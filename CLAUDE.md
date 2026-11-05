@@ -5,7 +5,7 @@ A Go web app that renders markdown issue files as a GitHub-style project tracker
 ## Running
 
 ```bash
-go build -o issue-viewer ./cmd/issue-viewer && ./issue-viewer -dir ./issues -docs ./docs -port 8080
+go build -o issue-viewer ./cmd/issue-viewer && ./issue-viewer -dir ./issues -docs ./docs -port 10770
 ```
 
 Flags:
@@ -13,7 +13,7 @@ Flags:
 - `-dir` — issue markdown directory (default `./issues`), supports subdirectories
 - `-docs` — documentation markdown directory (default `./docs`)
 - `-host` — interface to listen on (default `127.0.0.1`; anything else is an opt-in and warns at startup). Requests whose `Host` isn't loopback, `*.localhost`, the bind address or in `allowed_hosts:` (projects.yaml) get 421
-- `-port` — HTTP port (default `8080`)
+- `-port` — HTTP port (default `10770`)
 
 ## Validation
 

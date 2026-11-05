@@ -1,0 +1,82 @@
+---
+title: "9. Sprawdź dowody, testy i dokumentację"
+description: "Nie tylko zielony status: konkretna weryfikacja kryteriów akceptacji."
+---
+
+## Cel
+
+Umieć ocenić rezultat pracy przed zgodą na następny etap. Zielony checkbox
+nie dowodzi sam z siebie, że funkcja działa.
+
+## Krok po kroku
+
+1. Otwórz zadanie i przeczytaj **Acceptance Criteria**, **Test Plan** oraz
+   zakładkę **Evidence**. Dla przełącznika motywu oczekuj np. zmiany wyglądu,
+   zachowania wyboru po odświeżeniu i obsługi klawiatury.
+2. Poproś o dokładne polecenia testów oraz wynik. Zapis powinien odróżniać testy
+   automatyczne od ręcznych i ujawniać znane niepowiązane błędy.
+3. Po rzeczywistym uruchomieniu testów odnotuj wynik:
+
+```bash
+issue-cli --project nauka comment ui/dodaj-przelacznik-motywu --text "tests: Testy przelacznika przeszly; reczne sprawdzenie odswiezenia jeszcze oczekuje."
+issue-cli --project nauka prove ui/dodaj-przelacznik-motywu --list
+```
+
+Komentarz nie uruchamia testów. Wpisuj prawdziwy wynik, nie przykładową deklarację.
+
+4. Dla kryteriów objętych `criteria_proven` wskaż test, commit lub krok playtestu.
+   Zobacz dostępne opcje `issue-cli prove --help` i identyfikatory z `checklist`.
+   Nie zaznaczaj AC ręcznie, aby obejść brak dowodów.
+5. Wykonaj ręczne kroki w **izolowanym sandboxie**. Instrukcja powinna określać
+   dane wejściowe, komendy, oczekiwany efekt i sprzątanie.
+   Jeśli projekt ma guided checks, człowiek uruchamia:
+
+```bash
+issue-cli --project nauka check-script ui/dodaj-przelacznik-motywu
+```
+
+6. Zapisz błąd jako komentarz z warunkami odtworzenia i nie dawaj zgody, jeśli
+   kryteria nie są spełnione. Po naprawie powtórz test, nie tylko odśwież tablicę.
+
+## Playtesty w repozytorium silnika
+
+To **komendy tego repozytorium**, nie wbudowane cele każdego nowego projektu.
+W jego głównym katalogu:
+
+```bash
+make playtest-check
+```
+
+Sprawdza definicje sesji, a nie zachowanie UI w przeglądarce.
+`make ux-test ISSUE=<slug>` uruchamia automatyczne kroki w Chrome,
+`make playtest ISSUE=<slug>` część ocenianą przez człowieka,
+a `make playtest-report ISSUE=<slug>` raportuje wynik. Zastąp `<slug>` rzeczywistą
+wartością i przeczytaj instrukcję sesji przed uruchomieniem.
+
+## Dokumentacja Twojego projektu
+
+Utwórz `~/awe-nauka/docs/motyw.md`, np.:
+
+```markdown
+---
+title: "Zmiana motywu"
+order: 1
+---
+
+Przełącznik w nagłówku zmienia motyw. Wybrana opcja jest pamiętana lokalnie.
+```
+
+Opisz wyłącznie faktycznie wdrożone zachowanie. Otwórz **Docs**, sprawdź tekst
+i dopiero potem oceniaj etap `documentation`.
+
+## Oczekiwany wynik
+
+Masz powtarzalny test, uczciwy zapis wyniku i dowody odnoszące się do kryteriów.
+Zgoda człowieka wynika z weryfikacji, nie z samej obecności komentarza `tests:`.
+
+## Źródła
+
+[Dowody kryteriów](/sources/docs/Workflow/proof.md) ·
+[Playtesty](/sources/docs/patterns/playtest/README.md) ·
+[Guided checks](/sources/docs/patterns/guided-check-scripts.md) ·
+[CLI prove](/sources/cmd/issue-cli/cmd_prove.go)

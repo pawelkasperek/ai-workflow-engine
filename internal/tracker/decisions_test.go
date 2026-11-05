@@ -126,7 +126,7 @@ func TestBuildDecisionIndex_ReplacedStaleAndCitations(t *testing.T) {
 	phases := decisionIssue("sim/phases", "obsolete", "## Decisions\n- **D-1** · 2026-09-27 · chat: Three phases of 20 minutes.\n- **D-2** · 2026-09-27 · deferred · chat: Respawn timers later.")
 	format := decisionIssue("sim/format", "obsolete", "## Decisions\n- **D-2** · 2026-09-26 · project rule: One continuous raid.\n\nSelf-cite sim/format#D-2 does not count.")
 	creeps := decisionIssue("sim/creeps", "backlog", "Built on sim/phases#D-1 and #sim/pivot#D-1.\nAgain sim/phases#D-1 (counted once).\n```\nsim/format#D-2 in a fence\n```")
-	events := decisionIssue("sim/events", "idea", "See http://localhost:8080/p/rm/issue/sim/phases#D-1 and unknown/x#D-1.")
+	events := decisionIssue("sim/events", "idea", "See http://localhost:10770/p/rm/issue/sim/phases#D-1 and unknown/x#D-1.")
 	closed := decisionIssue("ui/gdd", "done", "Cites sim/phases#D-1 and sim/format#D-2.")
 	issues := []*Issue{pivot, phases, format, creeps, events, closed}
 

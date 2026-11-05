@@ -1,0 +1,39 @@
+
+default:
+    @just --list
+
+# Instalacja powtarzalna, zgodna z package-lock.json.
+install:
+    npm ci
+
+# Tutorial: http://localhost:10780 (nie uruchamia serwera Go).
+dev:
+    npm run dev
+
+# Kontrola struktury lekcji, nawigacji i plików źródłowych.
+check:
+    npm run check:content
+
+# Kompilacja MDX, klienta i serwera; generuje też typy tras TanStack.
+build:
+    npm run build
+
+# Przy świeżym checkoutcie najpierw wykonaj build (typy tras).
+typecheck:
+    npm run types:check
+
+# Sprawdzenie zbudowanego serwera na losowym wolnym porcie.
+smoke:
+    node scripts/smoke.mjs
+
+# Podgląd builda: http://localhost:10780.
+preview:
+    npm run preview
+
+# Pełne lokalne CI, bez publikacji i bez pracy agentów.
+ci:
+    just install
+    just check
+    just build
+    just typecheck
+    just smoke

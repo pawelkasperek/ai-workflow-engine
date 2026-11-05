@@ -55,7 +55,7 @@ projects:
 ```
 
 ```bash
-# 4. Open the board on http://localhost:8080 (it listens on 127.0.0.1 only)
+# 4. Open the board on http://localhost:10770 (it listens on 127.0.0.1 only)
 issue-viewer -config projects.yaml
 ```
 
@@ -218,7 +218,7 @@ All taken from the sample project (`make demo`).
 | `issue-cli retrospective <slug>`, `report-bug` | Feedback on the workflow and the tool |
 | `issue-cli lead spawn`, `approve <slug>` | Start the project lead; the lead records an approval you gave in chat |
 | `issue-cli ci status` | Local CI: where `main` stands and the recent runs |
-| `issue-viewer -config projects.yaml [-port 8080]` | Start the viewer (localhost only; `-host` to change it) |
+| `issue-viewer -config projects.yaml [-port 10770]` | Start the viewer (localhost only; `-host` to change it) |
 
 All commands: `issue-cli help`, or [docs/CLI/overview.md](docs/CLI/overview.md).
 
@@ -255,6 +255,13 @@ Next, from [docs/roadmap.md](docs/roadmap.md):
 - **0.58, one landing page:** Status at `/`; the Classic board and Graph are retired
 
 ## Contributing
+
+### Tutorial po polsku
+
+W katalogu [`tutorial/`](tutorial/README.md) znajduje się przewodnik obsługi aplikacji
+krok po kroku, zbudowany na React, TanStack Start i Fumadocs.
+Uruchom `just tutorial-install`, następnie `just tutorial-dev` i otwórz
+http://localhost:10780. Pełne lokalne CI: `just tutorial-ci`.
 
 The author tracks this tool's own work with the tool (its `issues/` folder is kept out of git). Before sending a change, run `make validate` (go vet, the test suite and a coverage floor on `issue-cli`). Build with `make build` and `make build-cli`; `make demo` starts the board on the sample project.
 
