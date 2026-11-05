@@ -12,8 +12,8 @@ needs. The shared shape is in `issue-cli process playtest`.
 
 ```
 internal/testids/testids.go     every data-testid id and pattern, one list
-templates/*.html                data-testid="board.card.{{tid .Slug}}" on what steps point at
-testids_test.go                 fails when templates and the list drift apart
+cmd/issue-viewer/templates/*.html                data-testid="board.card.{{tid .Slug}}" on what steps point at
+cmd/issue-viewer/testids_test.go                 fails when templates and the list drift apart
 playtest/sessions/<name>.yaml   sessions (step id = checkbox id)
 playtest/scenarios/<name>/      scenario.yaml, workflow.yaml, tracker/<System>/*.md fixtures, optional root/
 cmd/playtest/                   the runner: check | ux-test | playtest | report

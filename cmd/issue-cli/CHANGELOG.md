@@ -297,7 +297,7 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 
 ## v0.48.1 — 2026-10-22
 
-- Fix: the Status and Metrics pages lost their layout on desktop. A merge dropped the closing `}` of the system pages' `@media (max-width: 900px)` block in `static/style.css`, so every later rule only applied below 900px. A new test fails on unbalanced braces in `style.css`.
+- Fix: the Status and Metrics pages lost their layout on desktop. A merge dropped the closing `}` of the system pages' `@media (max-width: 900px)` block in `cmd/issue-viewer/static/style.css`, so every later rule only applied below 900px. A new test fails on unbalanced braces in `style.css`.
 
 ## v0.48.0 — 2026-10-22
 
@@ -360,7 +360,7 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 - The viewer's top bar is replaced by a left sidebar on every project page. It shows the project name and version, New issue, the main views (Board, List, Balance when configured, Decisions, Docs), and a **More** group (Graph, Canvas, Agents, Retros, Workflow, Stats, GitHub) that opens on its own views and remembers whether you left it open. Below those come the running-agents count, Spawn lead with the project's actions, and the theme swatches. On the Board the sidebar also lists systems with open counts; each one filters the board.
 - New default dark theme from the workbench mockups: condensed bold page titles, monospace slugs, rounded cards and chips in four tones. Dracula and light are restyled to match. The fonts (Archivo, JetBrains Mono) ship with the viewer, so it makes no external font requests.
 - Below 900px the sidebar stacks above the page, and no page scrolls sideways.
-- For views and playtests: views are listed once, in `navViews` (`nav.go`). Every project template renders `{{template "sidebar" (sidebar .Prefix "<key>")}}`. The new test ids are `nav.sidebar`, `nav.more`, `nav.create`, `nav.panel.system.*` and `nav.theme.*`. `header.bar`, `header.create` and `actions.bar` are gone, and `nav.tab.*` is kept.
+- For views and playtests: views are listed once, in `navViews` (`cmd/issue-viewer/nav.go`). Every project template renders `{{template "sidebar" (sidebar .Prefix "<key>")}}`. The new test ids are `nav.sidebar`, `nav.more`, `nav.create`, `nav.panel.system.*` and `nav.theme.*`. `header.bar`, `header.create` and `actions.bar` are gone, and `nav.tab.*` is kept.
 
 ## v0.40.0 — 2026-10-21
 
@@ -414,7 +414,7 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 
 - Bundled workflow templates are versioned. `development`, `review` and `writing` start with `template: <name>@v0.36.0` and a `features:` record, so `workflow init` writes a stamped, recorded file. `template: custom` opts a hand-built workflow out.
 - The refreshed templates add: approval gates that hand off to the lead (the agent says what it needs and ends its turn; no waiting or polling), design overlap and discoverability checks, throwaway-sandbox manual tests, a rule for documenting unrelated test failures, types of work (`feature`, `tweak`, `bugfix`) in `development`, and a sample project action.
-- New feature catalog (bundled `templates/workflow-features.yaml`): 35 entries, one per `workflow.yaml` capability (statuses, gates, automation, actions, board, worktrees, template conventions such as the v0.34.0 playtest-session wording). Each has what/why/where, a YAML snippet, the question to ask the human, and structural detection probes over the parsed YAML.
+- New feature catalog (bundled `cmd/issue-viewer/templates/workflow-features.yaml`): 35 entries, one per `workflow.yaml` capability (statuses, gates, automation, actions, board, worktrees, template conventions such as the v0.34.0 playtest-session wording). Each has what/why/where, a YAML snippet, the question to ask the human, and structural detection probes over the parsed YAML.
 - `issue-cli workflow scan` detects which catalog features a `workflow.yaml` has and writes its `features:` record (installed `<id>@<version>`, declined `<id>`). It rewrites only that block. `--dry-run` previews; `--installed`, `--declined` and `--forget` record what an upgrade picked, declined or re-opened.
 - `issue-cli workflow upgrade` (alias `issue-cli upgrade`) is read-only. It proposes the features a project lacks, item by item, using the `features:` record first and the probes as a fallback, lists declined features, proposes updates for older installed versions, and prints the upgrade steps. `--all` lists the whole catalog, and `--json` gives agents a plan.
 - `start` and `process workflow` print a one-line hint when upgrade has proposals: tell the operator, and upgrade only if they ask.
@@ -550,9 +550,9 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 
 - Web UI: new **+ New issue** button in the header on both the list and board views opens a modal that creates an issue without leaving the browser. Title and body are required; the body textarea is prefilled from the per-status `template:` block in `workflow.yaml`, and changing the Status dropdown refills it only if the body hasn't been edited.
 - The form prefills the system from the currently-active `?system=` filter, defaults status to the first creatable status (any status before `backlog`), and on success navigates to the new issue's detail page.
-- The 3-second auto-refresh polling no longer wipes an open create modal — `static/auto-refresh.js` skips its full-page reload while `window.__createModalOpen` is true.
-- The board's per-column `+` buttons keep working as before; they now share the same modal partial (`templates/_create_modal.html`) as the new header button.
-- No new endpoint, no schema change — the modal posts to the existing `POST /p/<project>/issues/create` handler (`handlers_issue_mutate.go`).
+- The 3-second auto-refresh polling no longer wipes an open create modal — `cmd/issue-viewer/static/auto-refresh.js` skips its full-page reload while `window.__createModalOpen` is true.
+- The board's per-column `+` buttons keep working as before; they now share the same modal partial (`cmd/issue-viewer/templates/_create_modal.html`) as the new header button.
+- No new endpoint, no schema change — the modal posts to the existing `POST /p/<project>/issues/create` handler (`cmd/issue-viewer/handlers_issue_mutate.go`).
 - See `docs/UI/overview.md` ("Create issue modal" section) for the field/wiring contract.
 - Resolves ui/add-issue-from-ui-via-button.
 
@@ -629,7 +629,7 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 
 - New per-project Stats tab at `/p/<project>/stats` surfacing the approximate token cost of the workflow itself. Four blocks: a constant Dispatch base prompt cost (the scaffolding text the issue viewer writes into every fresh agent dispatch), a Static reference table covering every (from→to) declared in `workflow.yaml`, an averaged Recorded transitions table sorted by avg dynamic descending, and Per-issue totals sorted by total dynamic cost. Token counts use a `len(s)/4` approximation — useful for relative comparison, not exact for any specific model.
 - A per-issue stats sidecar `<issue>.stats.json` is now written next to the markdown file every time `tracker.ApplyTransitionToFile` runs a successful transition. Each record carries `from`, `to`, `ts`, `static_tokens` (workflow scaffolding only — validate rules, append_section bodies, inject_prompt prompts, target-status template and entry guidance), `dynamic_tokens` (scaffolding plus the issue body and joined comments captured at the transition moment), and a nullable `actual_tokens` slot reserved for a future hybrid pass that records measured agent-run tokens. Atomic writes via the same helper as the data-table sidecar; a missing sidecar is treated as "no records", never an error. The `tracker.MarkIssueDoneOnce` multi-step fast-path bypasses this and is intentionally not recorded — it is uncommon and skips multiple statuses.
-- Refactored: the `buildAgentPrompt` format string in `handlers_dispatch.go` is now a single `tracker.AgentDispatchPromptTemplate` constant defined in `internal/tracker/dispatch.go`. The Stats tab uses the same constant via `tracker.AgentDispatchPromptStaticCost()` so the two stay in sync. No behavior change for dispatched bots.
+- Refactored: the `buildAgentPrompt` format string in `cmd/issue-viewer/handlers_dispatch.go` is now a single `tracker.AgentDispatchPromptTemplate` constant defined in `internal/tracker/dispatch.go`. The Stats tab uses the same constant via `tracker.AgentDispatchPromptStaticCost()` so the two stay in sync. No behavior change for dispatched bots.
 - See `docs/workflow-stats.md` for the full feature description, sidecar schema, and out-of-scope items.
 
 ## v0.13.0 — 2026-04-30
@@ -649,12 +649,12 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 
 ## v0.10.4 — 2026-04-30
 
-- Internal refactor: `cmd/issue-cli/main.go` (2380 lines, ~250-line dispatch switch) split into one `cmd_<name>.go` per subcommand plus a `Command`/`Context` registry (`commands.go`, `context.go`, `helpers.go`). `main()` is now 12 lines and only logs the invocation, parses globals, and delegates to `run()`. Every subcommand owns its own `flag.FlagSet` and returns errors instead of calling `os.Exit`; the package-global `jsonOutput` is gone (`Context.JSONOutput` carries the flag), so two CLI invocations with different `--json` modes can run concurrently without racing — verified by a new `TestConcurrentJSONOutputDoesNotRace` under `go test -race`. Top-level help is generated from the registry rather than a hand-rolled blob, so adding a subcommand no longer requires editing `printHelp`. No public CLI behavior change: text and `--json` shapes are byte-for-byte identical to v0.10.3.
+- Internal refactor: `cmd/issue-cli/main.go` (2380 lines, ~250-line dispatch switch) split into one `cmd_<name>.go` per subcommand plus a `Command`/`Context` registry (`commands.go`, `context.go`, `cmd/issue-viewer/helpers.go`). `main()` is now 12 lines and only logs the invocation, parses globals, and delegates to `run()`. Every subcommand owns its own `flag.FlagSet` and returns errors instead of calling `os.Exit`; the package-global `jsonOutput` is gone (`Context.JSONOutput` carries the flag), so two CLI invocations with different `--json` modes can run concurrently without racing — verified by a new `TestConcurrentJSONOutputDoesNotRace` under `go test -race`. Top-level help is generated from the registry rather than a hand-rolled blob, so adding a subcommand no longer requires editing `printHelp`. No public CLI behavior change: text and `--json` shapes are byte-for-byte identical to v0.10.3.
 - Side-effect fixes embedded in the refactor: `findIssue` now returns `(*Issue, error)` (the old `fatal()`-on-miss path swallowed every "not-found" branch); `runStart` matches missing approvals via `errors.Is(err, tracker.ErrApprovalMissing)` instead of `strings.Contains` against the message; `claim --force` is parsed by `flag.FlagSet` rather than walked out of `os.Args` with a `goto`; `report-bug` opens its log file with `O_CREATE|O_EXCL` plus a counter suffix so two reports in the same second no longer truncate each other; `update --title ""` is now distinguishable from "title flag absent" (`flag.Visit`).
 
 ## v0.10.3 — 2026-04-29
 
-- Internal refactor: `internal/tracker/workflow.go` (1812 lines) split into six cohesive files (`workflow_config.go`, `workflow_transition.go`, `workflow_merge.go`, `workflow_validate.go`, `workflow_preview.go`, `workflow_schema.go`), plus a new `heading.go` for the section/heading helpers shared with `issue.go`. No public API change, no behavior change — pure source reorganization to make subsequent workflow-area changes produce smaller, single-area diffs. `docs/API/overview.md`, `docs/CLI/overview.md`, and `docs/Workflow/overview.md` updated to reference the new layout.
+- Internal refactor: `internal/tracker/workflow.go` (1812 lines) split into six cohesive files (`workflow_config.go`, `workflow_transition.go`, `workflow_merge.go`, `workflow_validate.go`, `workflow_preview.go`, `workflow_schema.go`), plus a new `heading.go` for the section/heading helpers shared with `cmd/issue-viewer/issue.go`. No public API change, no behavior change — pure source reorganization to make subsequent workflow-area changes produce smaller, single-area diffs. `docs/API/overview.md`, `docs/CLI/overview.md`, and `docs/Workflow/overview.md` updated to reference the new layout.
 
 ## v0.10.2 — 2026-04-29
 
@@ -662,7 +662,7 @@ Focus: project status pages. Two Safe core (0.53) fixes that landed early ship w
 
 ## v0.10.1 — 2026-04-29
 
-- Internal refactor: `handlers.go` (3512 lines) split into 13 cohesive files (`routes.go`, `template_funcs.go`, `helpers.go`, `tmux.go`, and `handlers_<area>.go` per responsibility). `handlers_test.go` (60K) split to mirror the new layout. No public API change, no behavior change — pure source reorganization to make subsequent handler-area changes produce smaller, single-area diffs.
+- Internal refactor: `handlers.go` (3512 lines) split into 13 cohesive files (`cmd/issue-viewer/routes.go`, `cmd/issue-viewer/template_funcs.go`, `cmd/issue-viewer/helpers.go`, `cmd/issue-viewer/tmux.go`, and `handlers_<area>.go` per responsibility). `handlers_test.go` (60K) split to mirror the new layout. No public API change, no behavior change — pure source reorganization to make subsequent handler-area changes produce smaller, single-area diffs.
 
 ## v0.10.0 — 2026-04-29
 

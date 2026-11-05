@@ -51,7 +51,7 @@ func TestMakefileStampsGitDescribe(t *testing.T) {
 	out := dryRun("install")
 	for _, want := range []string{
 		`go install -ldflags "-X main.Version=v9.9.0-rc.1" ./cmd/issue-cli/`,
-		`go install -ldflags "-X main.Version=v9.9.0-rc.1" .`,
+		`go install -ldflags "-X main.Version=v9.9.0-rc.1" ./cmd/issue-viewer/`,
 	} {
 		if !strings.Contains(out, want) {
 			t.Errorf("make install on the tag: missing %q:\n%s", want, out)

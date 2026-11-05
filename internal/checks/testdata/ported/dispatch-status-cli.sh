@@ -43,7 +43,7 @@ echo "Sandbox: $tmp (deleted at the end)."
 echo "cli = $bin/issue-cli --config $cfg --project sand (run from $tmp, under clean_shell)"
 echo
 echo "Building issue-viewer and issue-cli from this branch…"
-go build -o "$bin/issue-viewer" . && go build -o "$bin/issue-cli" ./cmd/issue-cli || {
+go build -o "$bin/issue-viewer" ./cmd/issue-viewer && go build -o "$bin/issue-cli" ./cmd/issue-cli || {
 	echo "build failed"
 	exit 2
 }

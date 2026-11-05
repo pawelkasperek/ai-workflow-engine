@@ -25,7 +25,7 @@ The Workflow system covers the workflow engine, transition logic, validation rul
 - `cmd/issue-cli/templates/workflow-features.yaml` — the feature catalog: every `workflow.yaml` capability, with detection probes, `sources:` and the text `upgrade` proposes
 - `cmd/issue-cli/templates/embed.go` — package `templates`: embeds the bundled templates and the catalog for issue-cli and the viewer
 - `internal/workflowupgrade/` — catalog loading, probe walker, `features:` record read/write (`Scan`, `WriteRecord`), stamp parsing and `BuildPlan` (catalog.go, plan.go); `CheckBranch` for `workflow catalog-check` (check.go); the guard tests (guard_test.go)
-- `cmd/issue-cli/cmd_upgrade.go`, `cmd_scan.go`, `cmd_catalog_check.go` — the `workflow upgrade` / `scan` / `catalog-check` commands; `updates.go` — the viewer's Updates tab
+- `cmd/issue-cli/cmd_upgrade.go`, `cmd_scan.go`, `cmd_catalog_check.go` — the `workflow upgrade` / `scan` / `catalog-check` commands; `cmd/issue-viewer/updates.go` — the viewer's Updates tab
 
 ## Workflow Structure
 
@@ -267,20 +267,20 @@ Dispatches without an issue slug (retros review, project-wide commands) never cr
 
 The optional `ci:` block (`tracker.CIConfig` in `internal/tracker/ci.go`) turns on local CI: its commands run on the integration branch after every move. It is project-wide like `workbench:`, so system and type overlays can't change it, and `Clone` copies it into scoped workflows. `Lint` checks it. A `ci:` entry is a plain string or `{cmd, tier, failures}`.
 
-Nothing about statuses, transitions or overlays changes. Without the block nothing runs and nothing shows. The runner is `internal/ci/` (run records, lock, persistent worktree, blame, watcher, one-liner); the viewer's watcher is `ci_watch.go` and the page model is `ci_view.go`. `tracker.CIStatusLine` is a hook `internal/ci` sets at init, so the dispatch prompt (built in `tracker`) can carry the CI line while the server and the CLI build the same prompt. User guide: [Workflow: Local CI](../workflow.md#local-ci).
+Nothing about statuses, transitions or overlays changes. Without the block nothing runs and nothing shows. The runner is `internal/ci/` (run records, lock, persistent worktree, blame, watcher, one-liner); the viewer's watcher is `cmd/issue-viewer/ci_watch.go` and the page model is `cmd/issue-viewer/ci_view.go`. `tracker.CIStatusLine` is a hook `internal/ci` sets at init, so the dispatch prompt (built in `tracker`) can carry the CI line while the server and the CLI build the same prompt. User guide: [Workflow: Local CI](../workflow.md#local-ci).
 
 ## Health snapshots (`health:`)
 
 The optional `health:` block (`tracker.HealthConfig` in `internal/tracker/health.go`) tunes project health snapshots: `big_file_lines`, `test_globs`, `exclude`, the per-family `timeout`, and `off`. Every git project gets snapshots without it. It is project-wide like `ci:`, so system and type overlays can't change it, and `Clone` copies it into scoped workflows. `Lint` checks it.
 
-Nothing about statuses, transitions or overlays changes. The collector is `internal/health/`: the family registry, the `.health/snapshots/` files, retention and the codebase family. The server's daily job is `health_watch.go`, and `issue-cli ci run` and `issue-cli health snapshot` take the others. User guide: [Workbench files: Health snapshots](../workbench-files.md#health-snapshots).
+Nothing about statuses, transitions or overlays changes. The collector is `internal/health/`: the family registry, the `.health/snapshots/` files, retention and the codebase family. The server's daily job is `cmd/issue-viewer/health_watch.go`, and `issue-cli ci run` and `issue-cli health snapshot` take the others. User guide: [Workbench files: Health snapshots](../workbench-files.md#health-snapshots).
 
 ## Release candidates (`workbench.release_candidates`)
 
 `workbench.release_candidates: true` (`tracker.WorkbenchConfig.ReleaseCandidates`) puts a release candidate before each release. When the milestone is ready, a local tag `<version>-rc.N` is cut and run on this machine's projects, and the release is published only on the owner's ok. The setting is project-wide like the rest of `workbench:`.
 
 Nothing about statuses, transitions or overlays changes, and no issue needs migrating. The setting changes three things:
-- The Waiting for release card (`release_candidate.go`) and `status.md`.
+- The Waiting for release card (`cmd/issue-viewer/release_candidate.go`) and `status.md`.
 - One line in the lead brief (`releaseCandidateBrief`).
 - What `report-bug` does with a report from a candidate build: the bug joins the milestone (`rcMilestone`).
 
@@ -295,7 +295,7 @@ The version stamp (`make install`) and the usage log's `ver` apply to every buil
 What reads it:
 - `internal/privacy`: the tracker repo (`Tracker.Init`, `Sync`, the sync record), releases (`Setup`, `Cut`, `Pick`, `Publish`, `IsSnapshot`), the badges (`WorkBadge`, `CodeBadge`) and the pre-push guard (`InstallHook`, `PrePush`, `DecisionQuotes`).
 - `issue-cli tracker`, `privacy` and `release`; `issue-cli init` (asks both questions on a terminal).
-- The viewer: `tracker_watch.go` (sync every 10 min), `privacy_view.go` (Status badges and Health lines, projects list, `/stats` overview), the Waiting for release card's publish step.
+- The viewer: `cmd/issue-viewer/tracker_watch.go` (sync every 10 min), `cmd/issue-viewer/privacy_view.go` (Status badges and Health lines, projects list, `/stats` overview), the Waiting for release card's publish step.
 - The lead brief (`snapshotsBrief`, `trackerBrief`).
 - `.github/workflows/privacy-guard.yml` (PRs) and `release-marker.yml` (skips private repos).
 

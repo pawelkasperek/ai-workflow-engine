@@ -30,7 +30,7 @@ proj=$S/proj
 mkdir -p "$S/bin" "$S/state" "$proj/docs"
 # The sandbox viewer records itself in viewer.json under XDG_STATE_HOME: keep it off your real one.
 export XDG_STATE_HOME=$S/state
-go build -o "$S/bin/issue-viewer" . && go build -o "$S/bin/issue-cli" ./cmd/issue-cli || {
+go build -o "$S/bin/issue-viewer" ./cmd/issue-viewer && go build -o "$S/bin/issue-cli" ./cmd/issue-cli || {
 	echo "Build failed."
 	exit 1
 }

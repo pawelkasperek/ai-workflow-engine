@@ -787,7 +787,7 @@ no projects config found. Checked, in order:
 Fix: export ISSUE_VIEWER_CONFIG=/path/to/projects.yaml, or start the viewer (issue-viewer --config /path/to/projects.yaml)
 ```
 
-(The real message shows the absolute paths.) Bootstrap mode (a cwd with `./issues/`) still picks the project; the lookup only decides which config it matches cwd against. Tests in `cmd/issue-cli` run with their own `XDG_STATE_HOME` and `XDG_CONFIG_HOME` and no `$ISSUE_VIEWER_CONFIG` (`main_testmain_test.go`), so they never read this machine's config.
+(The real message shows the absolute paths.) Bootstrap mode (a cwd with `./issues/`) still picks the project; the lookup only decides which config it matches cwd against. Tests in `cmd/issue-cli` run with their own `XDG_STATE_HOME` and `XDG_CONFIG_HOME` and no `$ISSUE_VIEWER_CONFIG` (`cmd/issue-cli/main_testmain_test.go`), so they never read this machine's config.
 
 **Resolution order in `loadProjectOrErr`:**
 

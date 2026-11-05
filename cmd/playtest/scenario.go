@@ -201,7 +201,7 @@ func BuildBinaries(repo, dir string, log io.Writer) (*Binaries, error) {
 		return nil, err
 	}
 	b := &Binaries{Dir: dir, Viewer: filepath.Join(dir, "issue-viewer"), CLI: filepath.Join(dir, "issue-cli")}
-	for _, t := range []struct{ out, pkg string }{{b.Viewer, "."}, {b.CLI, "./cmd/issue-cli"}} {
+	for _, t := range []struct{ out, pkg string }{{b.Viewer, "./cmd/issue-viewer"}, {b.CLI, "./cmd/issue-cli"}} {
 		cmd := exec.Command("go", "build", "-o", t.out, t.pkg)
 		cmd.Dir = repo
 		cmd.Stdout, cmd.Stderr = log, log

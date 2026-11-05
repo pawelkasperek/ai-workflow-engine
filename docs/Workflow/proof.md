@@ -111,7 +111,7 @@ Two validation rules:
 
 `criteria_proven` needs git and the playtest runs, which the `tracker` package can't reach. `internal/proof`
 registers the check with `tracker.SetProofChecker` in its `init`. issue-cli imports it, and the viewer imports it
-in `main.go` for transition previews; a program that doesn't import it fails the rule with a pointer to issue-cli.
+in `cmd/issue-viewer/main.go` for transition previews; a program that doesn't import it fails the rule with a pointer to issue-cli.
 
 ## Prompts
 

@@ -8,14 +8,14 @@ VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 LDFLAGS := -X main.Version=$(VERSION)
 
 build:
-	go build -ldflags "$(LDFLAGS)" -o issue-viewer .
+	go build -ldflags "$(LDFLAGS)" -o issue-viewer ./cmd/issue-viewer/
 
 build-cli:
 	go build -ldflags "$(LDFLAGS)" -o issue-cli ./cmd/issue-cli/
 
 install:
 	go install -ldflags "$(LDFLAGS)" ./cmd/issue-cli/
-	go install -ldflags "$(LDFLAGS)" .
+	go install -ldflags "$(LDFLAGS)" ./cmd/issue-viewer/
 	@echo "Installed issue-cli and issue-viewer $(VERSION) via go install"
 
 demo: build

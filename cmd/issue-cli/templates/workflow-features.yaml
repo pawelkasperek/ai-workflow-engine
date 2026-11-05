@@ -79,7 +79,7 @@ entries:
     version: v0.36.0
     category: lifecycle
     propose: false
-    sources: ["internal/tracker/workflow_transition.go#DefaultNextStatus", "internal/tracker/workflow_transition.go#IsSideStatus", "handlers_detail.go"]
+    sources: ["internal/tracker/workflow_transition.go#DefaultNextStatus", "internal/tracker/workflow_transition.go#IsSideStatus", "cmd/issue-viewer/handlers_detail.go"]
     title: "Optional (skippable) statuses"
     what: |
       `optional: true` lets a forward transition skip the status. The viewer shows a
@@ -732,7 +732,7 @@ entries:
     version: v0.54.0
     category: automation
     propose: true
-    sources: ["internal/ci/**", "internal/tracker/ci.go", "ci_watch.go", "ci_view.go", "cmd/issue-cli/cmd_ci.go"]
+    sources: ["internal/ci/**", "internal/tracker/ci.go", "cmd/issue-viewer/ci_watch.go", "cmd/issue-viewer/ci_view.go", "cmd/issue-cli/cmd_ci.go"]
     title: "Local CI on the integration branch"
     what: |
       `ci:` runs your check commands on local main after every merge, in a persistent
@@ -819,7 +819,7 @@ entries:
     version: v0.36.0
     category: actions
     propose: true
-    sources: ["internal/tracker/workflow_config.go#CustomAction", "handlers_dispatch.go#handleProjectAction", "handlers_dispatch.go#renderProjectActionPrompt"]
+    sources: ["internal/tracker/workflow_config.go#CustomAction", "cmd/issue-viewer/handlers_dispatch.go#handleProjectAction", "cmd/issue-viewer/handlers_dispatch.go#renderProjectActionPrompt"]
     title: "Project action buttons"
     what: |
       `project_actions:` adds one-shot agent buttons to the list, board and graph views.
@@ -845,7 +845,7 @@ entries:
     version: v0.36.0
     category: board
     propose: false
-    sources: ["internal/tracker/workflow_config.go#WorkflowBoardConfig", "handlers_board.go"]
+    sources: ["internal/tracker/workflow_config.go#WorkflowBoardConfig", "cmd/issue-viewer/handlers_board.go"]
     title: "Custom board columns"
     what: |
       `board.columns` sets which statuses the board shows, in order (default: the whole
@@ -864,7 +864,7 @@ entries:
     version: v0.36.0
     category: board
     propose: false
-    sources: ["internal/tracker/workflow_config.go#WorkflowBoardConfig", "templates/board.html"]
+    sources: ["internal/tracker/workflow_config.go#WorkflowBoardConfig", "cmd/issue-viewer/templates/board.html"]
     title: "Custom board card fields"
     what: |
       `board.card_fields` picks the frontmatter fields shown on board cards (default:
@@ -914,7 +914,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: true
-    sources: ["internal/tracker/health.go", "internal/health/**", "health_view.go", "health_watch.go", "cmd/issue-cli/cmd_health.go", "internal/playtestruns/**"]
+    sources: ["internal/tracker/health.go", "internal/health/**", "cmd/issue-viewer/health_view.go", "cmd/issue-viewer/health_watch.go", "cmd/issue-cli/cmd_health.go", "internal/playtestruns/**"]
     title: "Health snapshot settings"
     what: |
       `health:` tunes the daily health snapshots behind the Health and Stats pages: the
@@ -944,7 +944,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: true
-    sources: ["release_wait.go", "status.go#readChangelog", "internal/milestone/**"]
+    sources: ["cmd/issue-viewer/release_wait.go", "cmd/issue-viewer/status.go#readChangelog", "internal/milestone/**"]
     title: "Releases on the Status page"
     what: |
       Without `workbench.changelog` the Status page reads CHANGELOG.md at the project
@@ -969,7 +969,7 @@ entries:
     category: workbench
     propose: false
     requires: [status-changelog]
-    sources: ["release_candidate.go", "internal/milestone/rc.go", "internal/telemetry/version.go", "cmd/issue-cli/cmd_version.go#rcNote", "cmd/issue-cli/cmd_report_bug.go#rcMilestone", "internal/tracker/lead_brief.go#releaseCandidateBrief"]
+    sources: ["cmd/issue-viewer/release_candidate.go", "internal/milestone/rc.go", "internal/telemetry/version.go", "cmd/issue-cli/cmd_version.go#rcNote", "cmd/issue-cli/cmd_report_bug.go#rcMilestone", "internal/tracker/lead_brief.go#releaseCandidateBrief"]
     title: "Release candidates before a release"
     what: |
       `workbench.release_candidates: true` puts a soak before each release. When the
@@ -994,7 +994,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: true
-    sources: ["internal/privacy/**", "internal/tracker/privacy.go", "privacy_view.go", "tracker_watch.go", "templates/_privacy.html", "cmd/issue-cli/cmd_tracker.go", "cmd/issue-cli/cmd_privacy.go", "cmd/issue-cli/cmd_release.go", ".github/workflows/release-marker.yml", ".github/workflows/privacy-guard.yml"]
+    sources: ["internal/privacy/**", "internal/tracker/privacy.go", "cmd/issue-viewer/privacy_view.go", "cmd/issue-viewer/tracker_watch.go", "cmd/issue-viewer/templates/_privacy.html", "cmd/issue-cli/cmd_tracker.go", "cmd/issue-cli/cmd_privacy.go", "cmd/issue-cli/cmd_release.go", ".github/workflows/release-marker.yml", ".github/workflows/privacy-guard.yml"]
     title: "Private work files and private development"
     what: |
       `privacy:` records the owner's two choices. `work_files: tracker` keeps issues/,
@@ -1042,7 +1042,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: true
-    sources: ["systems.go", "handlers_systems.go", "docsections.go", "internal/tracker/workbench.go#WorkbenchSystem", "internal/tracker/workbench.go#WorkbenchFamily"]
+    sources: ["cmd/issue-viewer/systems.go", "cmd/issue-viewer/handlers_systems.go", "cmd/issue-viewer/docsections.go", "internal/tracker/workbench.go#WorkbenchSystem", "internal/tracker/workbench.go#WorkbenchFamily"]
     title: "System page details"
     what: |
       Every issue `system:` already has a page, listed under Systems in the sidebar.
@@ -1071,7 +1071,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: true
-    sources: ["handlers_pages.go", "internal/tracker/workbench.go#WorkbenchPage", "internal/tracker/workbench.go#PagePaths"]
+    sources: ["cmd/issue-viewer/handlers_pages.go", "internal/tracker/workbench.go#WorkbenchPage", "internal/tracker/workbench.go#PagePaths"]
     title: "Project pages"
     what: |
       `workbench.status_page` shows your own HTML page as the default Status view (the
@@ -1097,7 +1097,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: true
-    sources: ["handlers_metrics.go", "handlers_metrics_panels.go", "internal/tracker/metrics.go", "internal/tracker/knobs.go", "internal/tracker/branches.go"]
+    sources: ["cmd/issue-viewer/handlers_metrics.go", "cmd/issue-viewer/handlers_metrics_panels.go", "internal/tracker/metrics.go", "internal/tracker/knobs.go", "internal/tracker/branches.go"]
     title: "Metrics and knobs"
     what: |
       Without `workbench.metrics` the Metrics view of a git checkout still lists its
@@ -1130,7 +1130,7 @@ entries:
     version: v0.54.0
     category: workbench
     propose: false
-    sources: ["internal/tracker/balance.go", "handlers_balance.go", "cmd/issue-cli/cmd_balance.go"]
+    sources: ["internal/tracker/balance.go", "cmd/issue-viewer/handlers_balance.go", "cmd/issue-cli/cmd_balance.go"]
     title: "Balance board"
     what: |
       `workbench.balance.comment_prefix` turns typed balance notes (`issue-cli balance`)
@@ -1369,7 +1369,7 @@ entries:
     category: conventions
     propose: true
     templates: [development]
-    sources: ["internal/checks/**", "cmd/issue-cli/cmd_check_script.go", "handlers_checks.go"]
+    sources: ["internal/checks/**", "cmd/issue-cli/cmd_check_script.go", "cmd/issue-viewer/handlers_checks.go"]
     title: "Manual checks that aren't playtests as guided check scripts"
     what: |
       Manual checks run from a shell (CLI commands, API routes, scripts, tmux) come as

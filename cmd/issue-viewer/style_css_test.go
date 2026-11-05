@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"regexp"
 	"testing"
 )
@@ -11,7 +10,7 @@ import (
 // in v0.48.0 the Metrics and Status CSS ended up inside a max-width media
 // query and only applied on narrow screens. Keep the braces balanced.
 func TestStyleCSSBracesBalanced(t *testing.T) {
-	data, err := os.ReadFile("static/style.css")
+	data, err := staticFS.ReadFile("static/style.css")
 	if err != nil {
 		t.Fatal(err)
 	}

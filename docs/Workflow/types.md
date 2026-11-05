@@ -5,7 +5,7 @@ order: 2
 
 > **Status: slice 1 implemented** (issue `workflow/types-of-work-epic-new-feature-bugfix-tweak-each-with-its-own-workflow`).
 > Slice 2 (see "Slices") is not built yet. The code is in `internal/tracker/workflow_types.go`,
-> `cmd/issue-cli/cmd_set_type.go`, `cmd/issue-cli/types.go` and `types_view.go`.
+> `cmd/issue-cli/cmd_set_type.go`, `cmd/issue-cli/types.go` and `cmd/issue-viewer/types_view.go`.
 
 ## Why
 
@@ -62,7 +62,7 @@ types:
 ## Resolution: `ForIssue`
 
 One resolver builds the per-issue config. `Project.LoadWorkflowForIssue` calls it, and so does every per-issue call
-site that calls `ForSystem` today (`handlers_workflow.go`, `cmd_process.go`):
+site that calls `ForSystem` today (`cmd/issue-viewer/handlers_workflow.go`, `cmd_process.go`):
 
 ```
 base ──ForType(type)──▶ scoped ──Merge(system overlay)──▶ per-issue config

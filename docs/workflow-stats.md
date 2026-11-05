@@ -79,7 +79,7 @@ Issues that transitioned before the feature shipped have no sidecar. The Stats t
 - `range`: `7d`, `30d` (default), `90d` or `all` (since the oldest snapshot or done issue). The old `?days=N` still works as a custom range and opens the time tables.
 - `group`: `type` (default), `system`, `epic` (the `parent:` slug) or `version`, for the "By <group>" bars and their drill-downs.
 - `p=90` switches the cycle chart to p90, `scale=share` the by-status bars to shares, `hide=<type,…>` hides series (click a legend entry), and `drill=…` opens the issues behind a bar or point.
-- `static/stats.js` remembers the last options per project (`stats:<slug>` in localStorage, read and written in try/catch). A visit without options restores them. Everything works without the script.
+- `cmd/issue-viewer/static/stats.js` remembers the last options per project (`stats:<slug>` in localStorage, read and written in try/catch). A visit without options restores them. Everything works without the script.
 
 **Now: gauges.**
 
@@ -113,7 +113,7 @@ Each workflow point covers the issues done in the 30 days before its snapshot, s
 **Charts** are SVG drawn on the server (`internal/chart`): no chart library, no inline script, so they work under a strict CSP.
 
 - **Accessible:** `role="img"` and an `aria-label` on each chart, a `<title>` on every mark (the hover tooltip), and a Table button per chart that swaps it for the same numbers as rows (a plain `<details>` without JavaScript).
-- **Colours:** classes (`s-agent`, `s-waiting`, `s-idle`, `s-feature`, `s-bugfix`, `s-tweak`, `s-none`, …) mapped to the theme's `--chart-*` tokens in `static/style.css`, in dark, Dracula and light. A type of work keeps its colour on every chart. The dark palette passes the colour-vision checks (worst adjacent ΔE 9.4); the light one is below 3:1 contrast for aqua and amber, which the table view covers.
+- **Colours:** classes (`s-agent`, `s-waiting`, `s-idle`, `s-feature`, `s-bugfix`, `s-tweak`, `s-none`, …) mapped to the theme's `--chart-*` tokens in `cmd/issue-viewer/static/style.css`, in dark, Dracula and light. A type of work keeps its colour on every chart. The dark palette passes the colour-vision checks (worst adjacent ΔE 9.4); the light one is below 3:1 contrast for aqua and amber, which the table view covers.
 
 **Speed.** The aggregate is cached per project, keyed by the done issues (slug and file time):
 
@@ -144,7 +144,7 @@ Below the dashboard, under Tables, three folded sections hold six blocks, in ord
 
 ## Timeline tab
 
-The issue page's second tab (`/p/<project>/issue/<slug>?tab=timeline`) shows where one issue's time went. It is built on each visit from files already on disk, by `loadTimelineSources` (`timeline_sources.go`) and `buildTimeline` (`timeline.go`), and replaces the old Agent Timeline list.
+The issue page's second tab (`/p/<project>/issue/<slug>?tab=timeline`) shows where one issue's time went. It is built on each visit from files already on disk, by `loadTimelineSources` (`cmd/issue-viewer/timeline_sources.go`) and `buildTimeline` (`cmd/issue-viewer/timeline.go`), and replaces the old Agent Timeline list.
 
 **Sources.** If one can't be read, the tab says so in a "Could not read N of 5 sources" box and hides what depends on it. It never errors.
 
@@ -164,7 +164,7 @@ Local CI runs (`.ci/runs/<sha>.json`) are read from the merge sha. For a done is
 
 1. Each approval's wait is [waiting on you](#what-is-recorded) as `tracker.OwnerWaits` derives it: from the agent's last call in that status to `approved_at`. It is **waiting on you** whatever the rules below say of that time.
 2. In a status only you can move on (its exit needs your approval: `in design`, `human-testing` in the bundled workflow), any other gap of 15 min or more is **waiting on you**.
-3. Any other gap of 15 min or more is **idle** (the same 15 min as `agentIdleAfter` in `agent_state.go`).
+3. Any other gap of 15 min or more is **idle** (the same 15 min as `agentIdleAfter` in `cmd/issue-viewer/agent_state.go`).
 4. Everything else is **agent working**.
 
 So agent working + waiting on you + idle = the total. A question answered in chat shows as idle, because nothing records it.
@@ -217,17 +217,17 @@ The tab label on every tab ("5h 0m", "1h 50m so far") reads only the stats sidec
 - `internal/tracker/stats.go` — `TransitionStat`, `StatsStore`, `Dispatch`, sidecar I/O (`StatsSidecarPath`, `LoadStats`, `SaveStats`, `AppendTransitionStat`, `RecordDispatch`), and the cost functions `StaticTransitionCost(wf, from, to)` and `DynamicTransitionCost(wf, from, to, body, comments)`.
 - `internal/tracker/stats_wait.go` — `OwnerWaits`, the derived "waiting on you" per approved gate.
 - `internal/agentrun/agentrun.go` — `Start` appends a `dispatches` entry once the agent's tmux session is created.
-- `internal/tracker/dispatch.go` — `AgentDispatchPromptTemplate` constant (single source of truth shared with `handlers_dispatch.go`; named `{{slug}}`, `{{system}}`, … placeholders that `BuildAgentPrompt` fills from `agentPromptFields`) and `AgentDispatchPromptStaticCost()`.
+- `internal/tracker/dispatch.go` — `AgentDispatchPromptTemplate` constant (single source of truth shared with `cmd/issue-viewer/handlers_dispatch.go`; named `{{slug}}`, `{{system}}`, … placeholders that `BuildAgentPrompt` fills from `agentPromptFields`) and `AgentDispatchPromptStaticCost()`.
 - `internal/tracker/workflow_transition.go` — `ApplyTransitionToFileWithFields` snapshots a `TransitionStat` after a successful transition, capturing the pre-transition body and comments for the dynamic cost, and `branchShas` adds `branch_head` / `merge_sha` (`WorkflowConfig.RepoRoot`, set from the project).
-- `internal/timeline/` — the Timeline tab's derivation: `Load` (stats sidecar, clilogs, work branch, playtest runs), `Split` (bands, gaps, owner waits, rework), `Aggregate` and the `workflow` health family. `timeline.go` and `timeline_sources.go` at the root build the tab's view on top.
-- `handlers_stats.go` — the `/stats` route handler. Walks the project's issues and aggregates per-(from→to) and per-issue, and builds the time section with `timeline.Aggregate`. `runTelemetryReport` (package var, stubbed in tests) and `loadCLIUsage` produce the CLI usage block.
-- `templates/stats.html` — page template: the dashboard (`statsChart` renders a chart card with its table and drill-down), then the tables. Reuses the existing `data-table` styling.
-- `stats_dashboard.go` — the dashboard model: options, gauges, trends from the snapshots, time bars, weekly columns, drill-downs. `buildDashboard` reads nothing from disk.
-- `stats_cache.go` — the per-project aggregate and CLI usage cache, and `warmStats` at server start.
-- `stats_overview.go`, `templates/stats_overview.html` — `/stats` across projects.
+- `internal/timeline/` — the Timeline tab's derivation: `Load` (stats sidecar, clilogs, work branch, playtest runs), `Split` (bands, gaps, owner waits, rework), `Aggregate` and the `workflow` health family. `cmd/issue-viewer/timeline.go` and `cmd/issue-viewer/timeline_sources.go` at the root build the tab's view on top.
+- `cmd/issue-viewer/handlers_stats.go` — the `/stats` route handler. Walks the project's issues and aggregates per-(from→to) and per-issue, and builds the time section with `timeline.Aggregate`. `runTelemetryReport` (package var, stubbed in tests) and `loadCLIUsage` produce the CLI usage block.
+- `cmd/issue-viewer/templates/stats.html` — page template: the dashboard (`statsChart` renders a chart card with its table and drill-down), then the tables. Reuses the existing `data-table` styling.
+- `cmd/issue-viewer/stats_dashboard.go` — the dashboard model: options, gauges, trends from the snapshots, time bars, weekly columns, drill-downs. `buildDashboard` reads nothing from disk.
+- `cmd/issue-viewer/stats_cache.go` — the per-project aggregate and CLI usage cache, and `warmStats` at server start.
+- `cmd/issue-viewer/stats_overview.go`, `cmd/issue-viewer/templates/stats_overview.html` — `/stats` across projects.
 - `internal/chart/` — line, stacked bars, columns, gauge and sparkline as SVG, each with `Table()`.
 - `internal/milestone/` — the current milestone (`Pick`, `Released`) and the `milestone` health family.
-- `static/stats.js` — table toggles, the group-by select, remembered options.
+- `cmd/issue-viewer/static/stats.js` — table toggles, the group-by select, remembered options.
 
 ## Out of scope (today)
 

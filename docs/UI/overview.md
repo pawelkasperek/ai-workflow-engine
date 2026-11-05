@@ -9,35 +9,35 @@ The UI system covers HTML templates, CSS styling, and client-side JavaScript for
 
 ## Key Files
 
-- `templates/list.html` — filterable issue list
-- `templates/workboard.html` — the board (`/workboard`): read-only cards with markers, epic progress and the agent footer (`handlers_workboard.go`; see [Workboard](#workboard))
-- `templates/_markers.html` — card marker partials: `markers`, `marker-chips`, `epic-progress`, `agent-footer`, `card-legend` (data from `markers.go`; agent state from `agent_state.go`)
-- `templates/board.html` — the classic kanban board with drag-and-drop (More › Classic board)
-- `templates/detail.html` — issue page: title, the Issue · Timeline · Evidence tabs (`?tab=`), and on the Issue tab the folded body with comments and the sidebar with dispatch (see [Issue page tabs](#issue-page-tabs))
-- `templates/_issue_tab.html` — the Issue tab's band, main-column cards and side-column cards (`issue_tab.go` builds them; see [The Issue tab](#the-issue-tab))
-- `templates/_timeline.html` — the Timeline tab (`timeline.go` builds the view on `internal/timeline`'s `Split`, `timeline_sources.go` reads its files; rules in [Workflow Stats](../workflow-stats.md#timeline-tab))
-- `templates/graph.html` — workflow status graph
-- `templates/agents.html` — agents canvas: lead/worker tree, unfinished jobs, selected-agent panel (handlers in `handlers_agents.go`)
-- `templates/canvas.html` — issues canvas: version columns × epic or system rows, pan and zoom (`handlers_canvas.go` builds it)
-- `templates/docs.html` — documentation viewer with sidebar navigation
-- `templates/_sidebar.html` — the project sidebar on every project page (see [Navigation and theme](#navigation-and-theme)); `nav.go` lists the views
-- `templates/_create_modal.html` — shared "New issue" modal partial included by list and board
-- `templates/_project_actions.html` — the project-action dispatch modal, included by the sidebar
-- `templates/balance.html` — balance board (`handlers_balance.go`, board built by `tracker.BuildBalanceBoard`). Its sidebar entry shows only when `workbench.balance` is set
-- `templates/status.html` — the project Status page (`handlers_status.go`; the model is `buildStatus` in `status.go`, the "waiting on you" rule is `attention.go`)
-- `templates/page.html`, `templates/_status_tabs.html` — the frame around a project's own HTML page (`workbench.status_page` / `pages`), and the Project status / Built-in tabs (`handlers_pages.go`). See [Project pages](#project-pages)
-- `templates/updates.html`, `templates/updates_overview.html` — the Updates tab and `/updates` (`updates.go`; the plan is `internal/workflowupgrade.BuildPlan`). See [Updates tab](#updates-tab)
-- `templates/decisions.html` — generated decisions index (`handlers_decisions.go`, index built by `tracker.BuildDecisionIndex`)
-- `templates/systems.html`, `templates/system.html` — systems index and the system / family pages (`handlers_systems.go`; the model is built in `systems.go`, the design doc panel in `docsections.go`). See [System pages](#system-pages)
-- `templates/metrics.html` — Metrics view: guard metrics, knobs, branches (`handlers_metrics.go`; readers in `internal/tracker/metrics.go`, `knobs.go`, `branches.go`, `deps.go`)
-- `templates/_metrics_panels.html` — the `system-guard-metrics` and `system-knobs` partials a system page embeds, fed by `systemMetricsPanels` (`handlers_metrics_panels.go`)
-- `static/style.css` — all CSS: theme tokens for dark, Dracula and light, then the shared pieces and each view
-- `static/fonts/` — Archivo and JetBrains Mono (woff2, OFL), served by the viewer itself
+- `cmd/issue-viewer/templates/list.html` — filterable issue list
+- `cmd/issue-viewer/templates/workboard.html` — the board (`/workboard`): read-only cards with markers, epic progress and the agent footer (`cmd/issue-viewer/handlers_workboard.go`; see [Workboard](#workboard))
+- `cmd/issue-viewer/templates/_markers.html` — card marker partials: `markers`, `marker-chips`, `epic-progress`, `agent-footer`, `card-legend` (data from `cmd/issue-viewer/markers.go`; agent state from `cmd/issue-viewer/agent_state.go`)
+- `cmd/issue-viewer/templates/board.html` — the classic kanban board with drag-and-drop (More › Classic board)
+- `cmd/issue-viewer/templates/detail.html` — issue page: title, the Issue · Timeline · Evidence tabs (`?tab=`), and on the Issue tab the folded body with comments and the sidebar with dispatch (see [Issue page tabs](#issue-page-tabs))
+- `cmd/issue-viewer/templates/_issue_tab.html` — the Issue tab's band, main-column cards and side-column cards (`cmd/issue-viewer/issue_tab.go` builds them; see [The Issue tab](#the-issue-tab))
+- `cmd/issue-viewer/templates/_timeline.html` — the Timeline tab (`cmd/issue-viewer/timeline.go` builds the view on `internal/timeline`'s `Split`, `cmd/issue-viewer/timeline_sources.go` reads its files; rules in [Workflow Stats](../workflow-stats.md#timeline-tab))
+- `cmd/issue-viewer/templates/graph.html` — workflow status graph
+- `cmd/issue-viewer/templates/agents.html` — agents canvas: lead/worker tree, unfinished jobs, selected-agent panel (handlers in `cmd/issue-viewer/handlers_agents.go`)
+- `cmd/issue-viewer/templates/canvas.html` — issues canvas: version columns × epic or system rows, pan and zoom (`cmd/issue-viewer/handlers_canvas.go` builds it)
+- `cmd/issue-viewer/templates/docs.html` — documentation viewer with sidebar navigation
+- `cmd/issue-viewer/templates/_sidebar.html` — the project sidebar on every project page (see [Navigation and theme](#navigation-and-theme)); `cmd/issue-viewer/nav.go` lists the views
+- `cmd/issue-viewer/templates/_create_modal.html` — shared "New issue" modal partial included by list and board
+- `cmd/issue-viewer/templates/_project_actions.html` — the project-action dispatch modal, included by the sidebar
+- `cmd/issue-viewer/templates/balance.html` — balance board (`cmd/issue-viewer/handlers_balance.go`, board built by `tracker.BuildBalanceBoard`). Its sidebar entry shows only when `workbench.balance` is set
+- `cmd/issue-viewer/templates/status.html` — the project Status page (`cmd/issue-viewer/handlers_status.go`; the model is `buildStatus` in `cmd/issue-viewer/status.go`, the "waiting on you" rule is `cmd/issue-viewer/attention.go`)
+- `cmd/issue-viewer/templates/page.html`, `cmd/issue-viewer/templates/_status_tabs.html` — the frame around a project's own HTML page (`workbench.status_page` / `pages`), and the Project status / Built-in tabs (`cmd/issue-viewer/handlers_pages.go`). See [Project pages](#project-pages)
+- `cmd/issue-viewer/templates/updates.html`, `cmd/issue-viewer/templates/updates_overview.html` — the Updates tab and `/updates` (`cmd/issue-viewer/updates.go`; the plan is `internal/workflowupgrade.BuildPlan`). See [Updates tab](#updates-tab)
+- `cmd/issue-viewer/templates/decisions.html` — generated decisions index (`cmd/issue-viewer/handlers_decisions.go`, index built by `tracker.BuildDecisionIndex`)
+- `cmd/issue-viewer/templates/systems.html`, `cmd/issue-viewer/templates/system.html` — systems index and the system / family pages (`cmd/issue-viewer/handlers_systems.go`; the model is built in `cmd/issue-viewer/systems.go`, the design doc panel in `cmd/issue-viewer/docsections.go`). See [System pages](#system-pages)
+- `cmd/issue-viewer/templates/metrics.html` — Metrics view: guard metrics, knobs, branches (`cmd/issue-viewer/handlers_metrics.go`; readers in `internal/tracker/metrics.go`, `knobs.go`, `branches.go`, `deps.go`)
+- `cmd/issue-viewer/templates/_metrics_panels.html` — the `system-guard-metrics` and `system-knobs` partials a system page embeds, fed by `systemMetricsPanels` (`cmd/issue-viewer/handlers_metrics_panels.go`)
+- `cmd/issue-viewer/static/style.css` — all CSS: theme tokens for dark, Dracula and light, then the shared pieces and each view
+- `cmd/issue-viewer/static/fonts/` — Archivo and JetBrains Mono (woff2, OFL), served by the viewer itself
 - `internal/testids/testids.go` — every `data-testid` the templates carry (playtest targets)
 
 ## Navigation and theme
 
-Every project page has the left sidebar from `templates/_sidebar.html`:
+Every project page has the left sidebar from `cmd/issue-viewer/templates/_sidebar.html`:
 
 - **All projects** link and the **project block**: name, version (projects.yaml `version`) and open-issue count.
 - **New issue**. On list and board it opens the create modal; elsewhere it links to `/?new=1`, which opens the modal on the list.
@@ -50,7 +50,7 @@ Every project page has the left sidebar from `templates/_sidebar.html`:
 
 Below 900px the sidebar stacks above the page. There is no phone menu yet.
 
-**Adding a view.** Add one entry to `navViews` in `nav.go` (key, label, path, `More`, optional `Show`), then start the template with:
+**Adding a view.** Add one entry to `navViews` in `cmd/issue-viewer/nav.go` (key, label, path, `More`, optional `Show`), then start the template with:
 
 ```html
 <body>
@@ -65,7 +65,7 @@ Below 900px the sidebar stacks above the page. There is no phone menu yet.
 
 The `sidebar` template func builds the `Nav` for the page's project, so page data only needs `Prefix`. A page with its own screen panel renders `sidebar-open`, the panel, then `sidebar-close`. `TestProjectPagesRenderSidebar` fails for a project page without the sidebar.
 
-**Theme tokens.** `static/style.css` starts with the tokens. The dark default is the workbench look; Dracula and light set the same names under `[data-theme]`:
+**Theme tokens.** `cmd/issue-viewer/static/style.css` starts with the tokens. The dark default is the workbench look; Dracula and light set the same names under `[data-theme]`:
 
 - surfaces: `--bg`, `--bg-sidebar`, `--bg-secondary` (cards), `--bg-tertiary` (hover), `--bg-active`
 - lines: `--border`, `--border-subtle`
@@ -97,7 +97,7 @@ Charts are inline SVG from `internal/chart`, drawn on the server: marks use `cur
 | `/canvas`         | `canvas.html` | Issues canvas: versions × epics (or systems), see [Issues canvas](#issues-canvas) |
 | `/docs`           | `docs.html`   | Docs with collapsible sidebar sections           |
 | `/issue/<slug>`   | `detail.html` | Issue page with tabs: Issue (brief and Needs-you band, folded body, edit, approve, dispatch, comments), Timeline (`?tab=timeline`, `&show=`), Evidence (`?tab=evidence`: is it proven?). See [Issue page tabs](#issue-page-tabs) |
-| `/stats`          | `stats.html`  | The stats dashboard: gauges (waiting on you, milestone, big files), trend lines from the health snapshots, where the time goes by status and group, issues done per week, drill-downs to the issues; options `range`, `group` (remembered per project by `static/stats.js`). The time tables, token-cost estimates and CLI usage are folded below. See [Workflow Stats: Stats page](../workflow-stats.md#stats-page) |
+| `/stats`          | `stats.html`  | The stats dashboard: gauges (waiting on you, milestone, big files), trend lines from the health snapshots, where the time goes by status and group, issues done per week, drill-downs to the issues; options `range`, `group` (remembered per project by `cmd/issue-viewer/static/stats.js`). The time tables, token-cost estimates and CLI usage are folded below. See [Workflow Stats: Stats page](../workflow-stats.md#stats-page) |
 | `/stats` (top level, no `/p/<project>`) | `stats_overview.html` | Every project compared from its health snapshots: one row each with waiting on you, cycle p50, rework share, issues done, lines of code, test ratio and big files, with sparklines; `range` (7/30/90 days) and `sort` links |
 | `/balance`        | `balance.html` | `?system=` scopes it to one system's issues (the system pages link here). Typed balance notes grouped by metric (state chip, hypothesis / change / evidence / verdict, earlier notes), joint passes from `balance_pass:` issues with **Start pass** (the existing dispatch endpoint), free-text notes under Unsorted. Shown only with `workbench.balance`; otherwise its sidebar entry is hidden and the page explains how to turn it on. Reloads when `/hash` changes, like `/decisions` |
 | `/systems`        | `systems.html` | One card per system, most open first: summary and design doc (from `workbench.systems`), open / done counts, status bar, waiting-on-you count and family chips, plus a "No system" line. See [System pages](#system-pages) |
@@ -125,11 +125,11 @@ In projects whose `workflow.yaml` defines `types:` ([Types of Work](../Workflow/
 - **Head:** system chip, `epic` chip, and the time in the current status. That time comes from the stats sidecar's last transition into the status (tooltip "since"), else the file mtime ("last file change"). It turns amber after 24 h, except in the first status, done and global statuses (parked).
 - **Title:** links to the issue.
 - **Epic progress:** a child shows "N of M · in <epic>"; an epic shows "N of M children done", with a bar.
-- **Markers** (`cardMarkers` in `markers.go`):
+- **Markers** (`cardMarkers` in `cmd/issue-viewer/markers.go`):
 
   | Chip | Tone | When |
   |:--|:--|:--|
-  | `approve <status> · 2 h` | amber | the next transition's approval is the only thing missing (`GateInfo.Ready` from `attention.go`); hidden while a playtest or check script is due |
+  | `approve <status> · 2 h` | amber | the next transition's approval is the only thing missing (`GateInfo.Ready` from `cmd/issue-viewer/attention.go`); hidden while a playtest or check script is due |
   | `playtest · 30 m` | amber | human-testing with a playtest session to judge |
   | `run checks · 30 m` | amber | human-testing with a [guided check script](../patterns/guided-check-scripts.md) and no owner run (`Attention.ChecksDue`); the tooltip names `issue-cli check-script <slug>` |
   | `question` | amber | the newest comment starts with `question:` |
@@ -137,7 +137,7 @@ In projects whose `workflow.yaml` defines `types:` ([Types of Work](../Workflow/
   | `needs revision[ · why]` | red | the `needs-revision` label or the `needs_revision` field |
   | `parked · <reason>` | grey | status parked; the reason is the first line of `## Parked Record` |
 
-- **Agent footer** (`agent_state.go`, the same rules as the [agents canvas](#agents-canvas)): links to `/agents?agent=<session>`, and its tooltip names the last issue-cli command.
+- **Agent footer** (`cmd/issue-viewer/agent_state.go`, the same rules as the [agents canvas](#agents-canvas)): links to `/agents?agent=<session>`, and its tooltip names the last issue-cli command.
   - green **agent working · last call N ago**;
   - grey **agent idle**: live, but no issue-cli call for 15 minutes;
   - amber **waiting on your approval / playtest / checks**, **asked you a question**;
@@ -166,7 +166,7 @@ Test ids: `workboard.*`, `marker.<kind>` and `nav.panel.legend`. The sessions `w
 - **Which systems.** A system is every distinct issue `system` value, matched case-insensitively, plus every key under `workbench.systems`. A project without the block still gets a page per system (D-2). Summary, design doc and families need the block, and an unconfigured page shows a hint naming `workbench.systems.<name>`.
 - **Header.**
   - the summary;
-  - chips: open / done counts (side statuses such as `obsolete` are counted separately), one chip per family (or the system's `umbrella`), and **N waiting on you** from `waitingOnOwner` in `attention.go` (the status page's rule: gate ready, open question, playtest to run);
+  - chips: open / done counts (side statuses such as `obsolete` are counted separately), one chip per family (or the system's `umbrella`), and **N waiting on you** from `waitingOnOwner` in `cmd/issue-viewer/attention.go` (the status page's rule: gate ready, open question, playtest to run);
   - links: the design doc, Board and List filtered by `?system=`, and the decisions count.
 - **Issues.**
   - The status bar runs in workflow order without side statuses.
@@ -182,7 +182,7 @@ Test ids: `workboard.*`, `marker.<kind>` and `nav.panel.legend`. The sessions `w
   Results are cached by branch head. Section names link to the heading ids that doc pages now render (goldmark `WithAutoHeadingID`). A doc that exists only on branches is reported as such.
 - **Recent decisions.** The 3 newest indexed decisions of the members, with "All N" linking to `/decisions?system=`. When none are indexed but members keep free-form `## Decisions` sections, the panel points at `issue-cli decide`.
 - **Balance notes.** Up to 3 open or unsorted `balance:` notes. They link to `/balance?system=` when the Balance view exists, and the panel is hidden without notes.
-- **Guard metrics and knobs.** `systemMetricsPanels` (`handlers_metrics_panels.go`) builds them from the system's (or family's) `metrics:` / `knobs:` lists. They render through the `system-guard-metrics` / `system-knobs` partials in `templates/_metrics_panels.html`, and are left out when the project has no metric or tuning source or the system lists none.
+- **Guard metrics and knobs.** `systemMetricsPanels` (`cmd/issue-viewer/handlers_metrics_panels.go`) builds them from the system's (or family's) `metrics:` / `knobs:` lists. They render through the `system-guard-metrics` / `system-knobs` partials in `cmd/issue-viewer/templates/_metrics_panels.html`, and are left out when the project has no metric or tuning source or the system lists none.
 
 Config, in `workflow.yaml`:
 
@@ -201,7 +201,7 @@ workbench:
 
 ## Status page
 
-`/p/<project>/status` is the first sidebar entry. It answers "where are we" without asking the lead. It is read-only, and everything comes from repo files. `buildStatus` (`status.go`) holds the rules and is tested without HTTP; the grouping and the caps are in `status_groups.go`.
+`/p/<project>/status` is the first sidebar entry. It answers "where are we" without asking the lead. It is read-only, and everything comes from repo files. `buildStatus` (`cmd/issue-viewer/status.go`) holds the rules and is tested without HTTP; the grouping and the caps are in `cmd/issue-viewer/status_groups.go`.
 
 **Layout.** A row of three tiles, then three rows on one shared grid (`.status-grid`, gap 20 px), so card edges line up down the page:
 
@@ -218,13 +218,13 @@ A row with a card missing (no `ci:` block, no health snapshot, nothing waiting f
 | 2 | Epics (2) · Waiting for release (1) | main · side (320 px) |
 | 3 | Recently shipped (2) · Versions, Recently released (1) | main · side (320 px) |
 
-**Health card** (`status.health`, `healthCard` in `health_view.go`). Only shown with a health snapshot; it reads the newest one, however old. It holds:
+**Health card** (`status.health`, `healthCard` in `cmd/issue-viewer/health_view.go`). Only shown with a health snapshot; it reads the newest one, however old. It holds:
 
 - **Derived** and **Agent opinion:** each the number, a thin bar (blue / amber) and one line, either the 7-day change (`▲ +2 in 7 days`, `no change yet`) or the review's age (`reviewed 3 days ago`; over 7 days `review 9 days old` in amber with a clock icon).
 - **Weakest:** the lowest-scoring component with its measured value.
 - **Recommendations:** "N recommendations wait for you", linking to the Health view's review.
 - **Lint:** the snapshot's lint count (`3 lint warnings`, `status.health.lint`), linking to the Health view's Lint section. It is missing when the snapshot predates the lint family.
-- **Privacy lines** (`status.privacy`, `privacy_view.go`, `templates/_privacy.html`): one line per badge, Work files then Code (`status.privacy.line.<kind>`, `data-level`). Green and grey are one quiet line; amber and red a tinted box with the sentence and its fix, as code or as a link to the Updates tab (`status.privacy.setup.<kind>`). Without a health snapshot they get their own small Privacy card (`status.privacy_card`).
+- **Privacy lines** (`status.privacy`, `cmd/issue-viewer/privacy_view.go`, `cmd/issue-viewer/templates/_privacy.html`): one line per badge, Work files then Code (`status.privacy.line.<kind>`, `data-level`). Green and grey are one quiet line; amber and red a tinted box with the sentence and its fix, as code or as a link to the Updates tab (`status.privacy.setup.<kind>`). Without a health snapshot they get their own small Privacy card (`status.privacy_card`).
 - **Open Health →**
 
 **Privacy badges after the title** (`status.privacy.badge.work`, `.code`, `data-level` green / amber / red / grey; a dashed border while not set up). Each links to its Health card line, and its `title` and `aria-label` carry the full sentence ("Work files private: ai-workflow-engine-tracker, last backup 12m ago"). The states are in [Workflow: Private work and code](../workflow.md#what-status-shows). All local (`git ls-files`, the tracker's git folder and sync file, the public branch's remote-tracking ref), cached a minute per project. The projects list shows the same two markers on each card (`projects.privacy.<kind>`), and the `/stats` overview a Privacy column (`stats.overview.privacy.<kind>`) and the counts under its title (`stats.overview.privacy`). `status.md` gets one line per badge after the summary line.
@@ -235,7 +235,7 @@ A row with a card missing (no `ci:` block, no health snapshot, nothing waiting f
 
 **Side cards fit their row** (D-7). In the rows under the milestone the main card sets the row's height (at least 240 px); the side column takes that height and adds none (`height: 0; min-height: 100%`), so there are no gaps. The last side card fills what is left; when space is short the cards above it shrink too, to 120 px at least. A card whose content doesn't fit is cut off (`overflow: clip`, so focus can't scroll it) under a fade and **Show all** (`status.<card>.fit`). That opens the whole card over the page (at most 80vh, scrolls), ending in **Show less**; a click outside, focus leaving it, or Escape folds it back. A `ResizeObserver` re-measures when a fold opens or the window resizes. On a phone the cards take their natural height.
 
-**Every list is capped** (the `cap…` constants in `status_groups.go`, read by the template as `.Cap`): it shows its first N rows, then the rest sit in a `<details class="status-more">` "+K more" that opens in place, without JS. The caps: Needs you 5 per kind, Working on 8, in-design agent chips 6, backlog and parked 5 each, epics per area 8, Versions 8, Unreleased 5, and the release-wait open list folds whole past 5 (10 rows inside, then "+K more"). The template splits a list with `head N list` / `rest N list` (`template_funcs.go`).
+**Every list is capped** (the `cap…` constants in `cmd/issue-viewer/status_groups.go`, read by the template as `.Cap`): it shows its first N rows, then the rest sit in a `<details class="status-more">` "+K more" that opens in place, without JS. The caps: Needs you 5 per kind, Working on 8, in-design agent chips 6, backlog and parked 5 each, epics per area 8, Versions 8, Unreleased 5, and the release-wait open list folds whole past 5 (10 rows inside, then "+K more"). The template splits a list with `head N list` / `rest N list` (`cmd/issue-viewer/template_funcs.go`).
 
 **Remembered per project.** Every fold (`details[data-fold]`) and the Epics tab, version and text filter are kept in `localStorage` under `status:<project>` as `{tab, version, q, open}`. Every read and write is in try/catch; without storage the page uses the defaults (Active, the current milestone, no text, the server's open state). A `<details open>` fires `toggle` while it is parsed, so the script records the state it set in `data-was` and saves only a real click.
 
@@ -261,7 +261,7 @@ A row with a card missing (no `ci:` block, no health snapshot, nothing waiting f
   - the project lead's state
   - chips for live agents on issues not yet in progress
 - **What's next** (`status.next`, in its tile's panel): the `## Next` section of the project lead's newest handoff note (`tracker.NewestHandoffNote`), rendered as markdown, with slugs in code spans linked to their issues. Then the backlog by priority, then parked issues with the first line of their `## Parked Record`.
-- **Needs you** (`status.waiting`, in its tile's panel; `waitingOnOwner` in `attention.go`, shared with the board markers and the system pages), amber while anything waits, each gate with an amber Review button:
+- **Needs you** (`status.waiting`, in its tile's panel; `waitingOnOwner` in `cmd/issue-viewer/attention.go`, shared with the board markers and the system pages), amber while anything waits, each gate with an amber Review button:
   - gates whose approval is the only unmet requirement (`WorkflowConfig.ReadyForApproval`, which skips `command_succeeds`)
   - human-testing issues with a playtest session (`issue: <slug>`) and no `-judge` run
   - human-testing issues with a guided check script (`# issue: <slug>`, in the worktree or the project) and no owner run record (`.agent-logs/checks/<name>/*-owner.txt`): the **Checks** list, each row with ▶ Run checks linking to the issue page; "N to check" in the tile
@@ -269,20 +269,20 @@ A row with a card missing (no `ci:` block, no health snapshot, nothing waiting f
   - issue-cli bug reports queued on this machine because `report-bug` found no engine project (`status.waiting.cli_bugs`, `clibug.PendingCount`): one row naming the count and `issue-cli report-bug --send`, one more on the waiting count and the sidebar's Status number, and a line in `status.md`
   - a footer counts gates whose checklist is still open
   - the sidebar's Status count is the same number
-- **Local CI** (only with a `ci:` block; `ci_view.go`), in the side column beside Current milestone:
+- **Local CI** (only with a `ci:` block; `cmd/issue-viewer/ci_view.go`), in the side column beside Current milestone:
   - a state chip (green, red, amber when CI can't run) and the one-liner `issue-cli ci status` prints
   - **Last runs:** the last 12 default-tier runs as boxes, oldest first (`status.ci.run.<sha>`, `data-state`), with a dashed box for a live run; each tooltip has the commit, result, age, duration and what failed
   - while red: the failing command and tests, the issues that landed since the last green run (and how many commits had no issue), the bugfix issue with `on_red: file_issue`, and the log tail in a `<details>`
   - red CI is the first entry under Waiting on you (`status.waiting.ci`) and adds one to the waiting count and the sidebar's Status number; `status.md` gets a `Local CI:` line, the tail while red, and the waiting entry
-  - the same state gives the merged issues a red `ci-red` card marker (`markers.go`, `ciMarkers`), which done workboard cards get too
-- **Waiting for release** (`release_wait.go`), in the side column beside Epics:
+  - the same state gives the merged issues a red `ci-red` card marker (`cmd/issue-viewer/markers.go`, `ciMarkers`), which done workboard cards get too
+- **Waiting for release** (`cmd/issue-viewer/release_wait.go`), in the side column beside Epics:
   - **Milestone:** the lowest issue `version:` after the newest released version (the top `## vX.Y.Z` changelog heading, else the newest git tag). `0.53` and `v0.53.0` compare equal. Parked issues don't count, and a version with only parked issues is skipped. With no release yet, it is the lowest version with an open issue. It shows done/total, its open issues (furthest along first, with status and assignee), and a chip: amber `vX.Y.0 not ready` or green `ready to cut`.
   - **Checks** (`status.release_wait.check.<key>`, `data-ok`):
     - `issues`: every milestone issue done.
     - `ci`: only with a `ci:` block. Local CI is green and its green commit is the branch head, read from `.ci/state.json` (nothing re-runs). When it fails, a red second line says why (red since, head not tested yet, can't run, no run yet), with a link to the Local CI card.
     - `changelog`: only with a changelog. At least one entry under `## Unreleased`.
   - **Ready to cut vX.Y.0** (`status.release_wait.ready`), when every check passes: rename `## Unreleased` to `## vX.Y.0 — <today>` with a focus summary, then push with the owner's go-ahead.
-  - **Release candidates** (`release_candidate.go`), only with `workbench.release_candidates: true` ([Roadmap: Cutting a release](../roadmap.md#cutting-a-release-candidate-soak-publish)). The card never shows Ready to cut vX.Y.0. Instead:
+  - **Release candidates** (`cmd/issue-viewer/release_candidate.go`), only with `workbench.release_candidates: true` ([Roadmap: Cutting a release](../roadmap.md#cutting-a-release-candidate-soak-publish)). The card never shows Ready to cut vX.Y.0. Instead:
     - **Candidate** (`status.release_wait.candidate`), folded to one summary line (`.candidate.summary`: tag, cut age, merges since, ran by N of M, open reports, a red "not the candidate"); a click opens the rows (`.candidate.fold`, remembered like the card's other folds). The newest local tag `vX.Y.0-rc.N` (`git for-each-ref refs/tags/vX.Y.0-rc.*`, numeric order), when it was cut, and the commits after it that touch more than the changelog (`git rev-list --count <tag>..<head> -- . ':(exclude)<changelog>'`). Both calls are vars for tests.
     - **Check `soaked`:** nothing merged after the candidate but the changelog. When it fails, it says `N commits since rc.K: cut rc.K+1`. Once `release/vX.Y` exists (`issue-cli release cut`), the count is on that branch ("Nothing picked onto release/vX.Y after rc.K") and the hint adds `issue-cli release cut vX.Y.0`.
     - **Check `picked`:** only with the release branch. Every done milestone issue's `work/<slug>` commits are on it, by patch (`git branch --no-merged`, then `git cherry` for those; `gitUnpicked`, a var for tests). When it fails it lists `issue-cli release pick <slugs>`.
@@ -306,12 +306,12 @@ A row with a card missing (no `ci:` block, no health snapshot, nothing waiting f
 
 ## Health view
 
-`/p/<project>/health` (`health_view.go`, `templates/health.html`) shows the derived health score and the agent opinion, from the health snapshots and `.health/opinions/` only. Every number and metric is in [Workbench files: Scores](../workbench-files.md#scores) and [The agent opinion](../workbench-files.md#the-agent-opinion).
+`/p/<project>/health` (`cmd/issue-viewer/health_view.go`, `cmd/issue-viewer/templates/health.html`) shows the derived health score and the agent opinion, from the health snapshots and `.health/opinions/` only. Every number and metric is in [Workbench files: Scores](../workbench-files.md#scores) and [The agent opinion](../workbench-files.md#the-agent-opinion).
 
 - **Now:** two cards side by side (stacked on a phone).
   - **Derived health:** a 0–100 gauge, its 7- and 30-day change and the share of the weight it comes from. Under it, the component table: what each part measures and its good → bad range, the measured value, a sub-score bar and the weight; a part without data says why. Below it, the newest snapshot's family warnings (`health.warnings`), one line each with the family in mono: a glob that matched no file, say. Session `catalog-truth` checks it.
   - **Agent opinion:** the gauge, the review's age (amber with a clock after 7 days) and **Run review**. Run review POSTs `/health/review` and starts the review agent `review-<project>` headless, like `issue-cli health review --spawn`. Below come the assessment and the recommendations. Proposed ones have **File as issue** (`/health/recommendation/<R#>/file`) and **Dismiss** with an optional reason (`…/dismiss`). Filed ones link their issue. The owner's click is the decision recorded on the new issue (`how: viewer`).
-- **Lint** (`health.lint`, `#lint`): `issue-cli health lint` run live over workflow.yaml and the issues (`lint_view.go`), between Now and Trends. The heading counts the warnings. Each warning is one numbered line (`health.lint.row`): check and where in mono, the message, and the fix in muted text. 50 are listed, then "N more: … --all" (`health.lint.more`), and the command closes the section. The `lint` row in the component table scores the same count from the snapshot ([The lint family](../workbench-files.md#the-lint-family)). Session `health-lint` runs on `playtest/scenarios/lint`.
+- **Lint** (`health.lint`, `#lint`): `issue-cli health lint` run live over workflow.yaml and the issues (`cmd/issue-viewer/lint_view.go`), between Now and Trends. The heading counts the warnings. Each warning is one numbered line (`health.lint.row`): check and where in mono, the message, and the fix in muted text. 50 are listed, then "N more: … --all" (`health.lint.more`), and the command closes the section. The `lint` row in the component table scores the same count from the snapshot ([The lint family](../workbench-files.md#the-lint-family)). Session `health-lint` runs on `playtest/scenarios/lint`.
 - **Trends** (`?range=7d|30d|90d|all`, one point per snapshot):
   - **Health scores:** both scores on a 0–100 axis.
   - **Unit tests: count vs runtime** and **End-to-end tests: count vs runtime:** each draws the count above and the wall time below, in two aligned panels on one time axis, count blue (`--chart-count`) and runtime orange (`--chart-runtime`). Never a second y-axis (D-6).
@@ -328,7 +328,7 @@ They run on `playtest/scenarios/health`, whose `health.off: true` keeps the fixt
 
 ## Updates tab
 
-`/p/<project>/updates` (`updates.go`, `templates/updates.html`) shows the operator what `issue-cli workflow upgrade` would propose: catalog features the project's `workflow.yaml` (the file `Project.LoadWorkflow` reads) lacks and nobody declined. It is the only place upgrades surface: no `issue-cli` command and no lead nudges about them. The rules are in [Workflow: Upgrading workflow.yaml](../Workflow/overview.md#upgrading-workflowyaml).
+`/p/<project>/updates` (`cmd/issue-viewer/updates.go`, `cmd/issue-viewer/templates/updates.html`) shows the operator what `issue-cli workflow upgrade` would propose: catalog features the project's `workflow.yaml` (the file `Project.LoadWorkflow` reads) lacks and nobody declined. It is the only place upgrades surface: no `issue-cli` command and no lead nudges about them. The rules are in [Workflow: Upgrading workflow.yaml](../Workflow/overview.md#upgrading-workflowyaml).
 
 - **Sidebar:** Updates after Decisions, with an amber count of what is undecided. Hidden for a built-in or `template: custom` workflow.
 - **Template strip:** the stamp → the bundled version with a state chip (`behind`, `N undecided` and `not recorded` amber, `up to date` green, `no stamp`). `not recorded` means nothing is left to propose but the file has features its record doesn't list (`issue-cli workflow scan`); the `/updates` overview uses the same states, the record's installed / declined counts, and the terminal command.
@@ -350,11 +350,11 @@ With `workbench.status_page` or `workbench.pages` in `workflow.yaml`, the viewer
   - A missing file or a bad path shows the `page.missing` card in place of the iframe.
 - **Sidebar:** `Nav.Pages` render as `.nav-sub` rows right after Status (`nav.page.<n>`); the active one is highlighted and Status is not.
 - **Refresh:** the frame polls `/hash`. When its `pages` value changes, the frame reloads only the iframe and shows "· reloaded" (`page.source.reloaded`). When `hash` changes, it re-posts the status.
-- **Origin guard:** `sameOriginOnly` (`origin.go`) answers 403 to any non-GET/HEAD request from another origin, `Origin: null` included, so a page may read but never write.
+- **Origin guard:** `sameOriginOnly` (`cmd/issue-viewer/origin.go`) answers 403 to any non-GET/HEAD request from another origin, `Origin: null` included, so a page may read but never write.
 
 ## Issues canvas
 
-`/p/<project>/canvas` (**Canvas** under More in the sidebar, after Graph) is a read-only map of what each epic holds and what each version plans. `buildCanvas` in `handlers_canvas.go` holds every rule and is unit-tested without HTTP. The template only renders the view model.
+`/p/<project>/canvas` (**Canvas** under More in the sidebar, after Graph) is a read-only map of what each epic holds and what each version plans. `buildCanvas` in `cmd/issue-viewer/handlers_canvas.go` holds every rule and is unit-tested without HTTP. The template only renders the view model.
 
 - **Columns** are the distinct `version:` values, sorted as dotted numbers (0.2 before 0.10). Each header shows "done/total", side-status counts and a status-coloured bar.
 - **The "no version" column** is hidden unless `?nover=1`, and the toolbar says how many issues it hides. When no issue has a version, the column is the only one and the toggle is disabled.
@@ -416,7 +416,7 @@ When working on UI changes:
 - Handlers must not block on local processes — use goroutines for async operations
 - User feedback after actions (dispatch, approve, save) goes through the toast notification system
 - The dispatch modal (board ▶, the issue page's Claude/Codex buttons `detail.dispatch.*`) answers a `409 waiting-on-gate` with a banner instead of steps (`gateBanner`, `dispatch.gate`): "Waiting on your approval for <status> … Nothing was started", an **Approve** link to `#approve-<status>` (`dispatch.gate.approve`) and **Dispatch anyway** (`dispatch.gate.force`), which re-posts with `force: true`. "Prompt sent" is hidden then. Balance's **Start pass** toasts the gate. See [Agent Dispatch](../agent-dispatch.md#waiting-on-a-gate)
-- Status colours come from `statusColor` in `template_funcs.go`. Its map keys are in `canonicalStatusKey` form (lower case, spaces as hyphens), so `in-progress`, not `in progress`.
+- Status colours come from `statusColor` in `cmd/issue-viewer/template_funcs.go`. Its map keys are in `canonicalStatusKey` form (lower case, spaces as hyphens), so `in-progress`, not `in progress`.
 - Board card fields and columns are driven by `workflow.yaml` — see [Board Configuration](../board-configuration)
 - The detail view substitutes `<!-- data -->` markers in the rendered body with an inline data table (status dropdown + contenteditable comment + remove button). Markdown HTML comments require `goldmark/renderer/html.WithUnsafe()`, which is enabled in `internal/tracker/issue.go`. See [Per-issue Data Store](../data-store.md).
 
@@ -468,7 +468,7 @@ Each tab is a URL, so a lead or an agent can hand the owner a link: `issue-cli s
 
 ## The Issue tab
 
-The tab answers in ten seconds what the issue is, where it is and what it needs from you (`ui/issue-tab-brief-needs-you-bar-and-a-folded-body`). `IssueTab` in `issue_tab.go` is its model: `buildIssueTab` reads nothing from disk, and `loadIssueTab` (`handlers_detail.go`) gathers its inputs. It is built only on this tab. It reads the Timeline's sources (`loadTimelineSources` and `buildTimeline`), `ownerAttention`, the board card's agent line (`cardAgents.footer`), `lastCliCall` and `epicProgress`, so every part says what the other views say.
+The tab answers in ten seconds what the issue is, where it is and what it needs from you (`ui/issue-tab-brief-needs-you-bar-and-a-folded-body`). `IssueTab` in `cmd/issue-viewer/issue_tab.go` is its model: `buildIssueTab` reads nothing from disk, and `loadIssueTab` (`cmd/issue-viewer/handlers_detail.go`) gathers its inputs. It is built only on this tab. It reads the Timeline's sources (`loadTimelineSources` and `buildTimeline`), `ownerAttention`, the board card's agent line (`cardAgents.footer`), `lastCliCall` and `epicProgress`, so every part says what the other views say.
 
 **The band** (`detail.brief`) is one card in three columns. Under 720 px it stacks as brief, Needs you, then where it is.
 - **What this is:** the brief (`tracker.Brief`, see [Issue File Format](../issue-format.md#the-brief)), then your words: the first decision quote on the issue that you said, then the newest `approval:` words, then the parent epic's first such quote ("epic D-n"). A quote with `how` "recorded by agent", or a "(Recommended)" pick, is not your words. The epic's progress follows.
@@ -497,7 +497,7 @@ The cost is the Timeline's sources on every view, about 10–20 ms on this board
 
 ## The Evidence tab
 
-The tab answers "is it proven?" (`ui/evidence-tab-proof-shots-and-criteria`). `EvidenceTab` in `evidence.go` is its model: `buildEvidence` reads nothing from disk, and `loadEvidenceTab` gathers its inputs. It is built only on this tab. The report behind it is `proof.Collect`, the one `issue-cli prove --list` and the `criteria_proven` gate read (see [Proof Links](../Workflow/proof.md)), so the three never disagree.
+The tab answers "is it proven?" (`ui/evidence-tab-proof-shots-and-criteria`). `EvidenceTab` in `cmd/issue-viewer/evidence.go` is its model: `buildEvidence` reads nothing from disk, and `loadEvidenceTab` gathers its inputs. It is built only on this tab. The report behind it is `proof.Collect`, the one `issue-cli prove --list` and the `criteria_proven` gate read (see [Proof Links](../Workflow/proof.md)), so the three never disagree.
 
 **The label** (on every tab, `evidenceLabel`):
 - green "n / n proven" when every criterion has a passing link;
@@ -521,7 +521,7 @@ An issue with no `created:` is dated by its first recorded transition or dispatc
 - **Playtest, per step:** each step's latest machine result and the screens it ran at. Your verdict comes from the latest judge run, else the newest `approval:` / `playtest:` comment naming the step, whose words are quoted.
 - **How links are checked:** the key.
 - **Watch:** `risk:` comments; "risk: none" reads as none.
-- **Stale text:** past design, the body lines under an Open questions heading, or that start "Open question:", or that use pending or TBD as a value (`stale_text.go`).
+- **Stale text:** past design, the body lines under an Open questions heading, or that start "Open question:", or that use pending or TBD as a value (`cmd/issue-viewer/stale_text.go`).
   - Skipped: code, checkboxes, struck-through lines, lines citing a D-n or saying "answered", and the Decisions, Acceptance Criteria, Test Plan, Testing, Human Testing, Documentation and Shipping sections.
   - Each line shows "Likely answered by" the D-n or `Clarifications` bullet that shares at least 3 distinctive words, else "No decision matches".
 
@@ -576,31 +576,31 @@ Under the approve buttons, the Human Approval section has one **Your words (opti
 - **Empty, blank, or un-approving** (clicking a green button): no comment and the canned nudge. Un-approving keeps the box's text.
 - **Comment write fails:** the approval still stands (`words_error` in the response), the toast says the words were not saved, and the box keeps them.
 
-The box is `templates/_approve_words.html` (`{{template "approve-words" "<place>"}}`, test id `approve_words.<place>`). `static/approve-words.js` builds the same markup for pages that render in JS (`approveWords.html(place)`), reads it (`take`) and empties it (`clear`). The agents panel and the Issue tab's Needs-you column (`approve_words.band`) use it. The Timeline shows the words beside the approval (see [Timeline tab](../workflow-stats.md#timeline-tab)).
+The box is `cmd/issue-viewer/templates/_approve_words.html` (`{{template "approve-words" "<place>"}}`, test id `approve_words.<place>`). `cmd/issue-viewer/static/approve-words.js` builds the same markup for pages that render in JS (`approveWords.html(place)`), reads it (`take`) and empties it (`clear`). The agents panel and the Issue tab's Needs-you column (`approve_words.band`) use it. The Timeline shows the words beside the approval (see [Timeline tab](../workflow-stats.md#timeline-tab)).
 
 ## Create issue modal
 
-The sidebar's **New issue** button opens a shared modal defined in `templates/_create_modal.html`, included by `list.html` and `board.html`. On other pages the button links to `/?new=1`, and the list opens the modal on load. The modal posts to `POST /p/<project>/issues/create` (handler `handleCreateIssue` in `handlers_issue_mutate.go`) and on `201` navigates the browser to the new issue's detail page.
+The sidebar's **New issue** button opens a shared modal defined in `cmd/issue-viewer/templates/_create_modal.html`, included by `list.html` and `board.html`. On other pages the button links to `/?new=1`, and the list opens the modal on load. The modal posts to `POST /p/<project>/issues/create` (handler `handleCreateIssue` in `cmd/issue-viewer/handlers_issue_mutate.go`) and on `201` navigates the browser to the new issue's detail page.
 
 Form fields:
 
 - **Title** (required, autofocused)
 - **Body** (required, markdown). Prefilled from the per-status body template defined in `workflow.yaml`; if the user has not edited the body, changing the Status dropdown refills it from the new status's template. A `bodyDirty` flag in the partial gates the refill.
 - **System** (required). Prefilled from the currently-active `?system=` filter on the page; falls back to "No system" if no filter is set.
-- **Status** (default = first status before `backlog`, e.g. `idea`). The select is populated from the workflow's "creatable" set — every status with index < `backlog` — computed by `createOptions(wf)` in `handlers_list.go`.
+- **Status** (default = first status before `backlog`, e.g. `idea`). The select is populated from the workflow's "creatable" set — every status with index < `backlog` — computed by `createOptions(wf)` in `cmd/issue-viewer/handlers_list.go`.
 - **Priority** (optional: low/medium/high/critical)
 - **Labels** (optional, comma-separated)
 - **Type** (only in projects with `types:`; defaults to `default_type`). A status the type's path skips — for example the board's `+` on a column a tweak never visits — starts the issue at the type's first status.
 
 The board's per-column `+` buttons keep working and pass their column status as a preset to `openCreateModal(status)`; the sidebar button calls `openCreateModal('')` for the default.
 
-Server-side wiring: both `ListData` and `BoardData` carry `CreatableStatuses []string` and `BodyTemplates map[string]string`. The templates JSON is embedded into the page via the `toJSON` template helper (`template_funcs.go`) which returns `template.JS` to bypass HTML escaping.
+Server-side wiring: both `ListData` and `BoardData` carry `CreatableStatuses []string` and `BodyTemplates map[string]string`. The templates JSON is embedded into the page via the `toJSON` template helper (`cmd/issue-viewer/template_funcs.go`) which returns `template.JS` to bypass HTML escaping.
 
-Auto-refresh interaction: `static/auto-refresh.js` skips its full-page `location.reload()` (board "needs reload" path and the detail-view path) when `window.__createModalOpen` is true, so a polled refresh cannot wipe an in-flight create.
+Auto-refresh interaction: `cmd/issue-viewer/static/auto-refresh.js` skips its full-page `location.reload()` (board "needs reload" path and the detail-view path) when `window.__createModalOpen` is true, so a polled refresh cannot wipe an in-flight create.
 
 ## Agents canvas
 
-`/p/<project>/agents` (**Agents** under More in the sidebar) shows who is working on what, built from `tmux ls`, the issues' `parent:` links and git. The page polls `GET /p/<project>/agents.json` (the `AgentsModel` in `handlers_agents.go`) every 5 seconds; the toolbar shows `live · tmux ls Ns ago`, or `offline` when a poll fails.
+`/p/<project>/agents` (**Agents** under More in the sidebar) shows who is working on what, built from `tmux ls`, the issues' `parent:` links and git. The page polls `GET /p/<project>/agents.json` (the `AgentsModel` in `cmd/issue-viewer/handlers_agents.go`) every 5 seconds; the toolbar shows `live · tmux ls Ns ago`, or `offline` when a poll fails.
 
 - **Tree:** the hierarchy only: You → the project lead (`lead-<project>`) → its workers, then any other live agent session (a project action, or a leftover `lead-*` session). Epics are not drawn here; the [issues canvas](#issues-canvas) shows them. Nodes show the session name without `agent-`, cut at 32 characters; the full name is the tooltip. Each open epic's children running and total stay in `agents.json`.
 - **Worker states:**
@@ -627,4 +627,4 @@ The detail page's sidebar has a **Lead** section: the project lead, whether it i
 
 ## Project actions
 
-The sidebar's **Actions** group has **Spawn lead** (`POST /p/<project>/lead/spawn`) on every project page, followed by one button per `project_actions:` entry. Each button POSTs to `POST /p/<project>/action/<id>` (handler `handleProjectAction` in `handlers_dispatch.go`), which dispatches a one-shot agent with no issue context — prompts template with `{{project}}` only. The dispatch result modal is `project-actions-modal` in `templates/_project_actions.html`. This mirrors the per-issue custom action buttons on `detail.html`, which come from `issue_actions:` (legacy alias: `actions:`). The sidebar reads the actions from the project's workflow (`Nav.ProjectActions`).
+The sidebar's **Actions** group has **Spawn lead** (`POST /p/<project>/lead/spawn`) on every project page, followed by one button per `project_actions:` entry. Each button POSTs to `POST /p/<project>/action/<id>` (handler `handleProjectAction` in `cmd/issue-viewer/handlers_dispatch.go`), which dispatches a one-shot agent with no issue context — prompts template with `{{project}}` only. The dispatch result modal is `project-actions-modal` in `cmd/issue-viewer/templates/_project_actions.html`. This mirrors the per-issue custom action buttons on `detail.html`, which come from `issue_actions:` (legacy alias: `actions:`). The sidebar reads the actions from the project's workflow (`Nav.ProjectActions`).
